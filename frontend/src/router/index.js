@@ -8,6 +8,21 @@ const routes = [
     component: () => import('../components/homePage.vue')
   },
   {
+    path: '/login',
+    name: 'loginpage',
+    component: () => import('../components/loginPage.vue')
+  },
+  {
+    path: '/services',
+    name: 'allservices',
+    component: () => import('../components/allServices.vue')
+  },
+  {
+    path: '/dashboard',
+    name: 'dashboardpage',
+    component: () => import('../components/dashboardPage.vue')
+  },
+  {
     path: '/intakeform',
     name: 'intakeform',
     props: true,
