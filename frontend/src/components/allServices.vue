@@ -6,8 +6,8 @@ export default {
     return {
       servicesList: [],
       newService: {
-        name:'',
-        status: ''
+        name: '',
+        status: '',
       },
     };
   },
@@ -18,6 +18,16 @@ export default {
     getServices() {
       axios.get(`${apiURL}/todos?limit=8`).then((res) => {
         this.servicesList = res.data.todos;
+      });
+    },
+    editService(serviceID) {
+      this.$router.push({ name: 'editservice', params: { id: serviceID } });
+    },
+    disableService(serviceID) {
+      axios.delete(`${apiURL}/todos/${serviceID}`, this.toDisable).then((res) => {
+        console.log(res);
+        alert('Disabled the srevice');
+        this.$router.push('/services');
       });
     },
   },
@@ -33,27 +43,37 @@ export default {
     <div class="mx-auto flex flex-col items-top md:flex-row pt-10">
       <div class="w-fit px-2 my-4 md:ml-10 md:my-0">
         <h2 class="text-2xl font-bold pt-2 md:w-full">List of Services</h2>
-        <p class="text-gray-500">Click on an action to edit or disable a service</p>
+        <p class="text-gray-500 italic">Click on an action to edit or disable a service</p>
       </div>
-      <div class="w-full px-2 mx-auto flex flex-col md:w-full md:px-0">
+      <div class="w-full px-2 mx-auto flex flex-col mr-auto md:w-full md:px-0">
         <table class="min-w-full shadow-md rounded">
           <thead class="bg-gray-50 text-xl">
             <tr>
-              <th class="py-4 px-2 w-2/4 text-left">Service Name</th>
-              <th class="py-4 w-1/4 text-left">Status</th>
-              <th class="py-4 w-1/4 text-left">Action</th>
+              <th class="py-4 px-2 w-3/4 text-left">Service Title</th>
+              <th class="py-4 w-fit text-left">Status</th>
+              <th class="py-4 w-fit text-left">Action</th>
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-250">
-            <tr v-for="service in servicesList" :key="service.id">
-              <td class="p-2 w-2/4 text-left text-gray-600">{{ service.todo }}</td>
-              <td class="p-2 w-1/4 text-left text-gray-600">
+            <tr
+              v-for="service in servicesList"
+              :key="service.id"
+              class="text-gray-500 hover:text-black hover:cursor-pointer"
+            >
+              <td class="p-2 w-3/4 text-left">{{ service.todo }}</td>
+              <td class="p-2 w-fit text-left">
                 {{ service.status ? service.status : 'Active' }}
               </td>
-              <td class="p-2 w-1/4 text-left">
-                <span class="text-gray-500 hover:cursor-pointer hover:text-black mr-4">Edit</span>
-                <span class="text-gray-500 hover:cursor-pointer hover:text-black mr-4"
-                  >Disable</span
+              <td class="p-2 w-fit text-left flex">
+                <span
+                  @click="editService(service.id)"
+                  class="material-icons text-gray-500 hover:cursor-pointer hover:text-black mr-4"
+                  >edit</span
+                >
+                <span
+                  @click="disableService(service.id)"
+                  class="material-icons text-gray-500 hover:cursor-pointer hover:text-black mr-4"
+                  >clear</span
                 >
               </td>
             </tr>

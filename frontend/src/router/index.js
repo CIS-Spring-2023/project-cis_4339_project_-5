@@ -18,6 +18,18 @@ const routes = [
     component: () => import('../components/allServices.vue')
   },
   {
+    path: '/createservice',
+    name: 'createservice',
+    props: true,
+    component: () => import('../components/createService.vue')
+  },
+  {
+    path: '/editeservice/:id',
+    name: 'editservice',
+    props: true,
+    component: () => import('../components/editService.vue')
+  },
+  {
     path: '/dashboard',
     name: 'dashboardpage',
     component: () => import('../components/dashboardPage.vue')
