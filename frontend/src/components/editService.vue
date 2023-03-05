@@ -1,9 +1,14 @@
 <script>
+import useVuelidate from '@vuelidate/core';
+import { required } from '@vuelidate/validators';
 import axios from 'axios';
 const apiUrl = import.meta.env.VITE_ROOT_API;
 
 export default {
   props: ['id'],
+  setup() {
+    return { v$: useVuelidate({ $autoDirty: true }) };
+  },
   data() {
     return {
       // create a varible to hold the current service state
@@ -18,13 +23,24 @@ export default {
     });
   },
   methods: {
-    saveUpdates() {
-      axios.put(`${apiUrl}/todos/${this.currentService.id}`).then((res) => {
-        console.log(res);
-        alert('Updated srevice');
-        this.$router.back();
-      });
+    async saveUpdates() {
+      const isValid = await this.v$.$validate();
+      if (isValid) {
+        axios.put(`${apiUrl}/todos/${this.currentService.id}`).then((res) => {
+          console.log(res);
+          alert('Updated srevice');
+          this.$router.push('/services');
+        });
+      }
     },
+  },
+  validations() {
+    return {
+      currentService: {
+        todo: { required },
+        completed: { required },
+      },
+    };
   },
 };
 </script>
@@ -51,6 +67,28 @@ export default {
             placeholder
             v-model="currentService.todo"
           />
+          <span class="text-black" v-if="v$.currentService.todo.$error">
+            <p
+              class="text-red-700"
+              v-for="error of v$.currentService.todo.$errors"
+              :key="error.$uid"
+            >
+              {{ error.$message }}!
+            </p>
+          </span>
+        </label>
+        <label class="block w-full mt-5 md:w-2/5">
+          <span class="text-gray-700">Servie Status</span>
+          <span style="color: #ff0000">*</span>
+          <select
+            v-model="currentService.completed"
+            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 hover:cursor-pointer"
+            name="completed"
+            id=""
+          >
+            <option value="true">Active</option>
+            <option value="false">Inactive</option>
+          </select>
         </label>
         <div class="w-full mt-10 flex space-x-5">
           <button

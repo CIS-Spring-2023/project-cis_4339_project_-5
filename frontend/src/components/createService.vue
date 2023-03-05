@@ -1,28 +1,44 @@
 <script>
+import useVuelidate from '@vuelidate/core';
+import { required } from '@vuelidate/validators';
 import axios from 'axios';
 const apiUrl = import.meta.env.VITE_ROOT_API;
 
 export default {
   props: ['id'],
+  setup() {
+    return { v$: useVuelidate({ $autoDirty: true }) };
+  },
   data() {
     return {
       // create a varible to hold the current service state
-      currentService: {
+      newService: {
         id: 151,
-        todo: 'Use DummyJSON in the project',
-        completed: false,
+        todo: '',
+        completed: true,
         userId: 5,
       },
     };
   },
   methods: {
-    createService() {
-      axios.post(`${apiUrl}/todos/add`, this.currentService).then((res) => {
-        console.log(res);
-        alert('Added new srevice');
-        this.$router.push('/services');
-      });
+    async createService() {
+      const isValid = await this.v$.$validate();
+      if (isValid) {
+        axios.post(`${apiUrl}/todos/add`, this.newService).then((res) => {
+          console.log(res);
+          alert('Added new srevice');
+          this.$router.push('/services');
+        });
+      }
     },
+  },
+  validations() {
+    return {
+      newService: {
+        todo: { required },
+        completed: { required },
+      },
+    };
   },
 };
 </script>
@@ -45,8 +61,26 @@ export default {
             type="text"
             class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 hover:cursor-pointer"
             placeholder
-            v-model="currentService.todo"
+            v-model="newService.todo"
           />
+          <span class="text-black" v-if="v$.newService.todo.$error">
+            <p class="text-red-700" v-for="error of v$.newService.todo.$errors" :key="error.$uid">
+              {{ error.$message }}!
+            </p>
+          </span>
+        </label>
+        <label class="block w-full mt-5 md:w-2/5">
+          <span class="text-gray-700">Servie Status</span>
+          <span style="color: #ff0000">*</span>
+          <select
+            v-model="newService.completed"
+            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 hover:cursor-pointer"
+            name="completed"
+            id=""
+          >
+            <option value="true">Active</option>
+            <option value="false">Inactive</option>
+          </select>
         </label>
         <div class="w-full mt-10 flex space-x-5">
           <button
