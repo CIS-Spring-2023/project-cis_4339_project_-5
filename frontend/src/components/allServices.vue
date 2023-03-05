@@ -23,13 +23,13 @@ export default {
     editService(serviceID) {
       this.$router.push({ name: 'editservice', params: { id: serviceID } });
     },
-    disableService(serviceID) {
-      axios.delete(`${apiURL}/todos/${serviceID}`, this.toDisable).then((res) => {
-        console.log(res);
-        alert('Disabled the srevice');
-        this.$router.push('/services');
-      });
-    },
+    // disableService(serviceID) {
+    //   axios.delete(`${apiURL}/todos/${serviceID}`, this.toDisable).then((res) => {
+    //     console.log(res);
+    //     alert('Disabled the srevice');
+    //     this.$router.push('/services');
+    //   });
+    // },
   },
 };
 </script>
@@ -62,18 +62,13 @@ export default {
             >
               <td class="p-2 w-3/4 text-left">{{ service.todo }}</td>
               <td class="p-2 w-fit text-left">
-                {{ service.status ? service.status : 'Active' }}
+                {{ service.completed ? 'Active' : 'Inactive' }}
               </td>
-              <td class="p-2 w-fit text-left flex">
+              <td class="p-2">
                 <span
                   @click="editService(service.id)"
                   class="material-icons text-gray-500 hover:cursor-pointer hover:text-black mr-4"
                   >edit</span
-                >
-                <span
-                  @click="disableService(service.id)"
-                  class="material-icons text-gray-500 hover:cursor-pointer hover:text-black mr-4"
-                  >clear</span
                 >
               </td>
             </tr>

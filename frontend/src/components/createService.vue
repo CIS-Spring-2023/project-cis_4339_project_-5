@@ -9,8 +9,8 @@ export default {
       // create a varible to hold the current service state
       currentService: {
         id: 151,
-        todo: 'Use DummyJSON in the project',
-        completed: false,
+        todo: '',
+        completed: true,
         userId: 5,
       },
     };
@@ -47,6 +47,19 @@ export default {
             placeholder
             v-model="currentService.todo"
           />
+        </label>
+        <label class="block w-full mt-5 md:w-2/5">
+          <span class="text-gray-700">Servie Status</span>
+          <span style="color: #ff0000">*</span>
+          <select
+            v-model="currentService.completed"
+            class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 hover:cursor-pointer"
+            name="completed"
+            id=""
+          >
+            <option value="true">Active</option>
+            <option value="false">Inactive</option>
+          </select>
         </label>
         <div class="w-full mt-10 flex space-x-5">
           <button
