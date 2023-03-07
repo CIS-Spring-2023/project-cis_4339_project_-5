@@ -2,11 +2,13 @@
 import { DateTime } from 'luxon'
 import axios from 'axios'
 import AttendanceChart from './barChart.vue'
+import ZipChart from './dashboardPage.vue'
 const apiURL = import.meta.env.VITE_ROOT_API
 
 export default {
   components: {
-    AttendanceChart
+    AttendanceChart,
+    ZipChart
   },
   data() {
     return {
@@ -132,6 +134,18 @@ export default {
             </div>
             <!-- End of error alert -->
           </div>
+          <!--Start of pie chart insertion-->
+          <div>
+            <br />
+            <h1
+              class="font-bold text-2xl text-red-700 tracking-widest text-center mt-5 mb-5"
+            >
+              Clients by zip code
+            </h1>
+            <ZipChart />
+            <br />
+          </div>
+          <!--End of pie chart insertion-->
         </div>
       </div>
     </div>
