@@ -20,7 +20,7 @@
             placeholder="Enter Password" required><br><br>
         </div>
           <button 
-            class="bg-red-700 text-white rounded hover:bg-red-600" @click="login()"
+            class="bg-red-700 text-white rounded hover:bg-red-600" 
             type ="submit" 
             >
             Login</button>
@@ -30,7 +30,6 @@
 </template>
 
 <script>
-//import { useLoggedInUserStore } from "@/store/loggedInUser";
 
 export default {
   data(){
@@ -41,13 +40,5 @@ export default {
         }
     };
  }
-
- //setup() {
- // const store = useLoggedInUserStore()
-   // return {
-      //you can return the whole store instance to use it in the template
-     //store,
-   // }
- // }
 };
 </script>
