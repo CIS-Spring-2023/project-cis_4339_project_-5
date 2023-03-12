@@ -7,7 +7,8 @@ export const useLoggedInUserStore = defineStore({
   //central part of the store
   state: () => {
     return {
-      isLoggedIn: false,
+      EisLoggedIn: false,
+      VisLoggedIn:false,
     }
   },
   // equivalent to methods in components, perfect to define business logic
@@ -16,8 +17,8 @@ export const useLoggedInUserStore = defineStore({
       try {
         const response = await apiLogin(username, password);
         this.$patch({
-          isLoggedIn: response.isAllowed,
-      
+          EisLoggedIn: response.EisAllowed,
+          VisLoggedIn:response.VisAllowed,
         })
         this.$router.push("/");
       } catch(error) {
@@ -25,13 +26,14 @@ export const useLoggedInUserStore = defineStore({
       }
     }
 
-    // we could do other stuff like redirecting the user
   }
 });
 
 //simulate a login - we will later use our backend to handle authentication
 function apiLogin(u, p) {
-  if (u === "ed" && p === "ed") return Promise.resolve({ isAllowed: true});
-  if (p === "ed") return Promise.resolve({ isAllowed: false });
- 
-} 
+  if (u === "ev" && p === "ev") return Promise.resolve({ EisAllowed: true});
+  if (p === "ev") return Promise.resolve({ EisAllowed: false });
+  if (u === "vv" && p === "vv") return Promise.resolve({ VisAllowed: true});
+  if (p === "vv") return Promise.resolve({ VisAllowed: false });
+
+}
