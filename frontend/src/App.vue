@@ -40,38 +40,38 @@ export default {
               </router-link>
             </li>
             <li>
-              <router-link v-if="user.isLoggedIn" to="/intakeform">
+              <router-link v-if="user.EisLoggedIn" to="/intakeform">
                 <span style="position: relative; top: 6px" class="material-icons">people</span>
                 Client Intake Form
               </router-link>
             </li>
             <li>
-              <router-link v-if="user.isLoggedIn" to="/eventform">
+              <router-link v-if="user.EisLoggedIn" to="/eventform">
                 <span style="position: relative; top: 6px" class="material-icons">event</span>
                 Create Event
               </router-link>
             </li>
             <li>
-              <router-link v-if="user.isLoggedIn" to="/findclient">
+              <router-link v-if="user"  to="/findclient">
                 <span style="position: relative; top: 6px" class="material-icons">search</span>
                 Find Client
               </router-link>
             </li>
             <li>
-              <router-link v-if="user.isLoggedIn" to="/createservice">
+              <router-link v-if="user.EisLoggedIn" to="/createservice">
                 <span style="position: relative; top: 6px" class="material-icons">add</span>
                 Add Service
               </router-link>
             </li>
             <li>
-              <router-link v-if="user.isLoggedIn" to="/services">
+              <router-link v-if="user.EisLoggedIn" to="/services">
                 <span style="position: relative; top: 6px" class="material-icons">list</span>
                 View Service
               </router-link>
             </li>
 
             <li>
-              <router-link v-if="user.isLoggedIn" to="/findevents">
+              <router-link v-if="user" to="/findevents">
                 <span style="position: relative; top: 6px" class="material-icons">search</span>
                 Find Event
               </router-link>
