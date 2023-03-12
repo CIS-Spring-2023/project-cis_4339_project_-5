@@ -52,7 +52,11 @@ export default {
               </router-link>
             </li>
             <li>
-              <router-link v-if="user"  to="/findclient">
+              <router-link v-if="user.EisLoggedIn" to="/findclient">
+                <span style="position: relative; top: 6px" class="material-icons">search</span>
+                Find Client
+              </router-link>
+              <router-link v-if="user.VisLoggedIn" to="/findclient">
                 <span style="position: relative; top: 6px" class="material-icons">search</span>
                 Find Client
               </router-link>
@@ -68,10 +72,18 @@ export default {
                 <span style="position: relative; top: 6px" class="material-icons">list</span>
                 View Service
               </router-link>
+              <router-link v-if="user.VisLoggedIn" to="/services">
+                <span style="position: relative; top: 6px" class="material-icons">list</span>
+                View Service
+              </router-link>
             </li>
 
             <li>
-              <router-link v-if="user" to="/findevents">
+              <router-link v-if="user.EisLoggedIn" to="/findevents">
+                <span style="position: relative; top: 6px" class="material-icons">search</span>
+                Find Event
+              </router-link>
+              <router-link v-if="user.VisLoggedIn" to="/findevents">
                 <span style="position: relative; top: 6px" class="material-icons">search</span>
                 Find Event
               </router-link>
