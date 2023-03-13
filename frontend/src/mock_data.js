@@ -1,3 +1,4 @@
+// list of mock clients
 export const clients = [
     {
         _id: 1,
@@ -8,6 +9,7 @@ export const clients = [
         },
         address: {
             city: "Houston",
+            zip: '77063'
         },
     },
     {
@@ -19,6 +21,7 @@ export const clients = [
         },
         address: {
             city: "Austin",
+            zip: '77063'
         },
     },
     {
@@ -30,6 +33,7 @@ export const clients = [
         },
         address: {
             city: "Houston",
+            zip: '77057'
         },
     },
     {
@@ -40,11 +44,49 @@ export const clients = [
             primary: "123-123-5545",
         },
         address: {
-            city: "Dallas",
+            city: "Houston",
+            zip: '77057'
+        },
+    },
+    {
+        _id: 5,
+        firstName: "Micheal",
+        lastName: "Scott",
+        phoneNumber: {
+            primary: "123-123-5545",
+        },
+        address: {
+            city: "Humble",
+            zip: '77479'
+        },
+    },
+    {
+        _id: 6,
+        firstName: "Charles",
+        lastName: "Khan",
+        phoneNumber: {
+            primary: "123-123-5545",
+        },
+        address: {
+            city: "Humble",
+            zip: '77000'
+        },
+    },
+    {
+        _id: 7,
+        firstName: "Lara",
+        lastName: "Dor",
+        phoneNumber: {
+            primary: "123-123-5545",
+        },
+        address: {
+            city: "Humble",
+            zip: '77057'
         },
     },
 ];
 
+// create  list of fake services to be used as mock data
 export const services = [
     {
         _id: 1,
@@ -78,6 +120,7 @@ export const services = [
     },
 ];
 
+// list of mock events
 export const events = [
     {
         address: {
@@ -85,7 +128,7 @@ export const events = [
             line2: "",
             city: "Houston",
             county: "cinco",
-            zip: "43378",
+            zip: "77063",
         },
         _id: "f1e08980-a4df-11ed-8dad-e721944ea634",
         org: "communitygarden",
@@ -98,11 +141,11 @@ export const events = [
     },
     {
         address: {
-            line1: "",
+            line1: "9455 Briar Forest Dr.",
             line2: "",
             city: "",
             county: "",
-            zip: "",
+            zip: "77200",
         },
         _id: "d5e71ba0-a718-11ed-b270-41de63d6fc88",
         org: "communitygarden",
@@ -115,11 +158,11 @@ export const events = [
     },
     {
         address: {
-            line1: "",
+            line1: "9200 Chevy Chase Dr.",
             line2: "",
-            city: "",
+            city: "Sugar Land",
             county: "",
-            zip: "",
+            zip: "77200",
         },
         _id: "a1f887e0-bc92-11ed-b40c-a36b65670a26",
         org: "communitygarden",
@@ -133,11 +176,11 @@ export const events = [
 
     {
         address: {
-            line1: "de",
+            line1: "1011 University Dr.",
             line2: "de",
-            city: "dede",
+            city: "Houston",
             county: "de",
-            zip: "de",
+            zip: "77204",
         },
         _id: "6eabb0c0-c155-11ed-856b-fb630b6bcf69",
         org: "communitygarden",
@@ -172,11 +215,11 @@ export const events = [
     },
     {
         address: {
-            line1: "",
+            line1: "4500 Martin Luther King St.",
             line2: "",
-            city: "",
+            city: "Humble",
             county: "",
-            zip: "",
+            zip: "77111",
         },
         _id: "225e1160-bdd4-11ed-8f76-f19c655beeeb",
         org: "communitygarden",
@@ -189,11 +232,11 @@ export const events = [
     },
     {
         address: {
-            line1: "",
+            line1: "400 Inwood Ln.",
             line2: "",
-            city: "",
+            city: "Houston",
             county: "",
-            zip: "",
+            zip: "77057",
         },
         _id: "226c9050-bdd4-11ed-8f76-f19c655beeeb",
         org: "communitygarden",
@@ -206,11 +249,11 @@ export const events = [
     },
     {
         address: {
-            line1: "",
+            line1: "59 Oak St.",
             line2: "",
-            city: "",
+            city: "Houston",
             county: "",
-            zip: "",
+            zip: "77063",
         },
         _id: "227087f0-bdd4-11ed-8f76-f19c655beeeb",
         org: "communitygarden",
@@ -225,9 +268,9 @@ export const events = [
         address: {
             line1: "1084 Margot Street",
             line2: "",
-            city: "",
+            city: "Houston",
             county: "",
-            zip: "",
+            zip: "77057",
         },
         _id: "0ea87d70-b90d-11ed-a60f-d59c2b3d6810",
         org: "communitygarden",
@@ -240,11 +283,11 @@ export const events = [
     },
     {
         address: {
-            line1: "",
+            line1: "325 Kile St.",
             line2: "",
-            city: "",
+            city: "Houston",
             county: "",
-            zip: "",
+            zip: "77063",
         },
         _id: "54ad2690-bb8d-11ed-903f-59a0d7ecc6a9",
         org: "communitygarden",
@@ -256,3 +299,13 @@ export const events = [
         __v: 0,
     },
 ];
+
+// extract zipcodes and coutn for each zipcode from clients
+const pie_data = (clients) => {
+    let data = {};
+    for (const client of clients) {
+        data[client.address.zip] = data[client.address.zip] ? data[client.address.zip] + 1 : 1;
+    }
+    return data
+}
+export const zip_client_data = pie_data(clients)

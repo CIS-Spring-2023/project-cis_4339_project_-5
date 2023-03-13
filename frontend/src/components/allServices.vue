@@ -6,25 +6,26 @@ import { services } from "../mock_data";
 export default {
   data() {
     return {
+      // create a list of services and asssing fake services data
       servicesList: services,
-      newService: {
-        name: "",
-        status: "",
-      },
     };
   },
-  // created() {
-  //   this.getServices();
-  // },
+  created() {
+    // this fetches the services fro aback end , not acllintg because apis is not available
+    // this.getServices();
+  },
   methods: {
+    // method to fetch all the services on load. not working because not api is available atm
     getServices() {
       axios.get(`${apiURL}/services`).then((res) => {
         this.servicesList = res.data.todos;
       });
     },
+    // this routes to edit srecvice apge for selected service
     editService(serviceID) {
       this.$router.push({ name: "editservice", params: { id: serviceID } });
     },
+
     // disableService(serviceID) {
     //   axios.delete(`${apiURL}/todos/${serviceID}`, this.toDisable).then((res) => {
     //     console.log(res);
@@ -34,6 +35,7 @@ export default {
     // },
   },
   setup() {
+    // import store from pinia to check if user logged in
     const user = useLoggedInUserStore();
     return { user };
   },
@@ -41,6 +43,7 @@ export default {
 </script>
 
 <template>
+  <!-- Check if user is logged in as viewer or editor, if yes render the tamplate else redirect to login page -->
   <main v-if="user.EisLoggedIn || user.VisLoggedIn">
     <div>
       <h1
@@ -91,6 +94,7 @@ export default {
       </div>
     </div>
   </main>
+  <!-- if not logged in, redaired to login page. -->
   <div v-else>
     {{ $router.push("/login") }}
   </div>

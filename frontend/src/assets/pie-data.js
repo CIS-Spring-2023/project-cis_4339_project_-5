@@ -1,11 +1,14 @@
+import { zip_client_data } from "../mock_data";
+console.log(zip_client_data)
 export const pieData = {
+
   type: 'pie',
   data: {
-    labels: ['77040', '77020', '77479', '77080'],
+    labels: Object.keys(zip_client_data),
     datasets: [
       {
         label: 'Clients Per Zipcodes',
-        data: [15, 2, 5, 1],
+        data: Object.values(zip_client_data),
         backgroundColor: [
           'rgb(255, 99, 132)',
           'rgb(54, 162, 235)',
