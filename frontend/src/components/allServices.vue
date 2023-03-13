@@ -1,6 +1,7 @@
 <script>
 import axios from 'axios';
 const apiURL = import.meta.env.VITE_ROOT_API;
+import { useLoggedInUserStore } from "@/store/loggedInUser";
 export default {
   data() {
     return {
@@ -30,6 +31,10 @@ export default {
     //     this.$router.push('/services');
     //   });
     // },
+  },
+  setup() {
+    const user = useLoggedInUserStore();
+    return { user };
   },
 };
 </script>
@@ -66,7 +71,7 @@ export default {
               </td>
               <td class="p-2">
                 <span
-                  @click="editService(service.id)"
+                  @click="editService(service.id)" v-if="user.EisLoggedIn"
                   class="material-icons text-gray-500 hover:cursor-pointer hover:text-black mr-4"
                   >edit</span
                 >
