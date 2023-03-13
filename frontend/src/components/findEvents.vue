@@ -2,6 +2,7 @@
 import { DateTime } from 'luxon'
 import axios from 'axios'
 const apiURL = import.meta.env.VITE_ROOT_API
+import { useLoggedInUserStore } from "@/store/loggedInUser";
 
 export default {
   data() {
@@ -55,7 +56,11 @@ export default {
     editEvent(eventID) {
       this.$router.push({ name: 'eventdetails', params: { id: eventID } })
     }
-  }
+  },
+  setup() {
+    const user = useLoggedInUserStore();
+    return { user };
+  },
 }
 </script>
 
@@ -148,7 +153,7 @@ export default {
           </thead>
           <tbody class="divide-y divide-gray-300">
             <tr
-              @click="editEvent(event._id)"
+              @click="editEvent(event._id)" v-if="user.EisLoggedIn"
               v-for="event in events"
               :key="event._id"
             >
