@@ -27,7 +27,9 @@ export const useLoggedInUserStore = defineStore({
           EisLoggedIn: response.EisAllowed,
           VisLoggedIn: response.VisAllowed,
         })
-        this.$router.push("/")
+        if (this.EisAllowed || this.VisLoggedIn) {
+          this.$router.push("/")
+        }
 
       } catch (error) {
         console.log(error)

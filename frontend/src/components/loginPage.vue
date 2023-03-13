@@ -1,3 +1,4 @@
+<!-- check the if someonme is logged in if yes not rendeger the lolgin page -->
 <template v-if="!store.EisLoggedIn && !store.VisLoggedIn">
   <div class="my-10">
     <h1
@@ -8,7 +9,7 @@
   </div>
 
   <div class="w-full max-w-lg mx-auto px-4">
-    <form @submit.prevent="store.login(username, password)" novalidate="true">
+    <form @submit.prevent="handleLogin" novalidate="true">
       <div class="form-group">
         <label for="username"> Username </label>
         <input
@@ -18,7 +19,16 @@
           class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 hover:cursor-pointer"
           placeholder="Enter Username"
           required
-        /><br /><br />
+        />
+        <span class="text-black" v-if="v$.username.$error">
+          <p
+            class="text-red-700"
+            v-for="error of v$.username.$errors"
+            :key="error.$uid"
+          >
+            {{ error.$message }}!
+          </p> </span
+        ><br /><br />
       </div>
       <div class="form-group">
         <label for="password"> Password </label>
@@ -29,7 +39,16 @@
           class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 hover:cursor-pointer"
           placeholder="Enter Password"
           required
-        /><br /><br />
+        />
+        <span class="text-black" v-if="v$.password.$error">
+          <p
+            class="text-red-700"
+            v-for="error of v$.password.$errors"
+            :key="error.$uid"
+          >
+            {{ error.$message }}!
+          </p> </span
+        ><br /><br />
       </div>
       <button
         class="bg-red-700 text-white rounded hover:bg-red-600"
@@ -40,9 +59,15 @@
     </form>
   </div>
 </template>
+<!-- redirect to home page if someone is already logged in -->
+<div v-else>
+    {{ $router.push("/") }}
+</div>
 
 <script>
 import { useLoggedInUserStore } from "@/store/loggedInUser";
+import useVuelidate from "@vuelidate/core";
+import { required } from "@vuelidate/validators";
 
 export default {
   data: () => {
@@ -53,8 +78,21 @@ export default {
   },
   setup() {
     const store = useLoggedInUserStore();
+    return { store, v$: useVuelidate({ $autoDirty: true }) };
+  },
+  methods: {
+    async handleLogin() {
+      const isValid = await this.v$.$validate();
+      if (isValid) {
+        this.store.login(this.username, this.password);
+      }
+      return;
+    },
+  },
+  validations() {
     return {
-      store,
+      username: { required },
+      password: { required },
     };
   },
 };

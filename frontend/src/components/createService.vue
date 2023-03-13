@@ -6,10 +6,8 @@ const apiUrl = import.meta.env.VITE_ROOT_API;
 import { useLoggedInUserStore } from "@/store/loggedInUser";
 
 export default {
-  props: ["id"],
-
   setup() {
-    // callt he userLoggediSore to checkif user is logged in
+    // callt he userLogginSore to checkif user is logged in
     const user = useLoggedInUserStore();
     return { user, v$: useVuelidate({ $autoDirty: true }) };
   },
@@ -17,26 +15,32 @@ export default {
     return {
       // create a varible to hold the current service state
       newService: {
-        id: 151,
-        todo: "",
-        completed: true,
-        userId: 5,
+        id: "",
+        title: "",
+        active: false,
       },
     };
   },
   methods: {
+    // this method craetes a sercvice, first valdates by calling validate funtions, and then posts the service to the servcer for creation
     async createService() {
       const isValid = await this.v$.$validate();
       if (isValid) {
-        axios.post(`${apiUrl}/todos/add`, this.newService).then((res) => {
-          console.log(res);
-          alert("Added new srevice");
-          this.$router.push("/services");
-        });
+        // comment out the api call since no api exists
+
+        // axios.post(`${apiUrl}/todos/add`, this.newService).then((res) => {
+        //   console.log(res);
+
+        //   this.$router.push("/services");
+        // });
+
+        // alert user that service has been created
+        alert("Added new srevice");
       }
     },
   },
   validations() {
+    // vuelidations to validate the new service contains rewquired data for creation
     return {
       newService: {
         todo: { required },
@@ -48,6 +52,7 @@ export default {
 </script>
 
 <template>
+  <!-- Editor has to be logged in to create serfvice, if not then redirec to loghin page -->
   <main class="px-2" v-if="user.EisLoggedIn">
     <div>
       <h1
@@ -115,6 +120,7 @@ export default {
       </div>
     </div>
   </main>
+  <!-- redirect to login page -->
   <div v-else>
     {{ $router.push("/login") }}
   </div>

@@ -6,8 +6,10 @@ const apiUrl = import.meta.env.VITE_ROOT_API;
 import { useLoggedInUserStore } from "@/store/loggedInUser";
 
 export default {
+  // define service props
   props: ["id"],
   setup() {
+    // call the store to get user login status and create validtor object to hold calidatrion error data
     const user = useLoggedInUserStore();
     return { user, v$: useVuelidate({ $autoDirty: true }) };
   },
@@ -37,6 +39,7 @@ export default {
     },
   },
   validations() {
+    // validations for new service
     return {
       currentService: {
         todo: { required },
@@ -48,6 +51,7 @@ export default {
 </script>
 
 <template>
+  <!-- editor need to be logged in create servicve else redirec to login page -->
   <main class="px-2" v-if="user.EisLoggedIn">
     <div>
       <h1
@@ -115,6 +119,7 @@ export default {
       </div>
     </div>
   </main>
+  <!-- redirect to login page -->
   <div v-else>
     {{ $router.push("/login") }}
   </div>
