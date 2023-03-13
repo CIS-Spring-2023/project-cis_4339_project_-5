@@ -1,62 +1,76 @@
 <script>
-import useVuelidate from '@vuelidate/core'
-import { required } from '@vuelidate/validators'
-import axios from 'axios'
-const apiURL = import.meta.env.VITE_ROOT_API
+import useVuelidate from "@vuelidate/core";
+import { required } from "@vuelidate/validators";
+import axios from "axios";
+const apiURL = import.meta.env.VITE_ROOT_API;
+import { useLoggedInUserStore } from "@/store/loggedInUser";
+import { services } from "../mock_data";
 
 export default {
   setup() {
-    return { v$: useVuelidate({ $autoDirty: true }) }
+    const user = useLoggedInUserStore();
+    return { user, v$: useVuelidate({ $autoDirty: true }) };
   },
   data() {
     return {
       // removed unnecessary extra array to track services
       event: {
-        name: '',
+        name: "",
         services: [],
-        date: '',
+        date: "",
         address: {
-          line1: '',
-          line2: '',
-          city: '',
-          county: '',
-          zip: ''
+          line1: "",
+          line2: "",
+          city: "",
+          county: "",
+          zip: "",
         },
-        description: ''
-      }
-    }
+        description: "",
+      },
+      activeServices: {},
+    };
+  },
+  created() {
+    this.getActiveServices();
   },
   methods: {
     async handleSubmitForm() {
       // Checks to see if there are any errors in validation
-      const isFormCorrect = await this.v$.$validate()
+      const isFormCorrect = await this.v$.$validate();
       // If no errors found. isFormCorrect = True then the form is submitted
       if (isFormCorrect) {
         axios
           .post(`${apiURL}/events`, this.event)
           .then(() => {
-            alert('Event has been added.')
-            this.$router.push({ name: 'findevents' })
+            alert("Event has been added.");
+            this.$router.push({ name: "findevents" });
           })
           .catch((error) => {
-            console.log(error)
-          })
+            console.log(error);
+          });
       }
-    }
+    },
+    getActiveServices() {
+      // axios.get(`${apiURL}/todos?limit=5`).then((res) => {
+      //   this.activeServices = res.data.todos;
+      // });
+      this.activeServices = services.filter((s) => s.active);
+    },
   },
+
   // sets validations for the various data properties
   validations() {
     return {
       event: {
         name: { required },
-        date: { required }
-      }
-    }
-  }
-}
+        date: { required },
+      },
+    };
+  },
+};
 </script>
 <template>
-  <main>
+  <main v-if="user.EisLoggedIn">
     <div>
       <h1
         class="font-bold text-4xl text-red-700 tracking-widest text-center mt-10"
@@ -129,63 +143,24 @@ export default {
               ></textarea>
             </label>
           </div>
-
           <div></div>
           <div></div>
           <div></div>
           <!-- form field -->
           <div class="flex flex-col grid-cols-3">
             <label>Services Offered at Event</label>
-            <div>
-              <label for="familySupport" class="inline-flex items-center">
+            <!-- loop over active services and create check boxes for each service -->
+            <div v-for="service in activeServices">
+              <label class="inline-flex items-center">
                 <input
                   type="checkbox"
-                  id="familySupport"
-                  value="Family Support"
+                  :id="service._id"
+                  :value="service._id"
                   v-model="event.services"
                   class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
                   notchecked
                 />
-                <span class="ml-2">Family Support</span>
-              </label>
-            </div>
-            <div>
-              <label for="adultEducation" class="inline-flex items-center">
-                <input
-                  type="checkbox"
-                  id="adultEducation"
-                  value="Adult Education"
-                  v-model="event.services"
-                  class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
-                  notchecked
-                />
-                <span class="ml-2">Adult Education</span>
-              </label>
-            </div>
-            <div>
-              <label for="youthServices" class="inline-flex items-center">
-                <input
-                  type="checkbox"
-                  id="youthServices"
-                  value="Youth Services Program"
-                  v-model="event.services"
-                  class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
-                  notchecked
-                />
-                <span class="ml-2">Youth Services Program</span>
-              </label>
-            </div>
-            <div>
-              <label for="childhoodEducation" class="inline-flex items-center">
-                <input
-                  type="checkbox"
-                  id="childhoodEducation"
-                  value="Early Childhood Education"
-                  v-model="event.services"
-                  class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
-                  notchecked
-                />
-                <span class="ml-2">Early Childhood Education</span>
+                <span class="ml-2">{{ service.title }}</span>
               </label>
             </div>
           </div>
@@ -267,4 +242,7 @@ export default {
       </form>
     </div>
   </main>
+  <div v-else>
+    {{ $router.push("/login") }}
+  </div>
 </template>

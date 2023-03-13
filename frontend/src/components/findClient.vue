@@ -1,63 +1,68 @@
 <script>
-import axios from 'axios'
-const apiURL = import.meta.env.VITE_ROOT_API
+import axios from "axios";
+const apiURL = import.meta.env.VITE_ROOT_API;
 import { useLoggedInUserStore } from "@/store/loggedInUser";
+import { clients } from "../mock_data";
 
 export default {
   data() {
     return {
       queryData: [],
       // Parameter for search to occur
-      searchBy: '',
-      firstName: '',
-      lastName: '',
-      phoneNumber: ''
-    }
+      searchBy: "",
+      firstName: "",
+      lastName: "",
+      phoneNumber: "",
+    };
   },
   created() {
-    this.getClients()
+    this.getClients();
   },
   methods: {
     handleSubmitForm() {
-      let endpoint = ''
-      if (this.searchBy === 'Client Name') {
-        endpoint = `clients/search/?firstName=${this.firstName}&lastName=${this.lastName}&searchBy=name`
-      } else if (this.searchBy === 'Client Number') {
-        endpoint = `clients/search/?phoneNumber.primary=${this.phoneNumber}&searchBy=number`
+      let endpoint = "";
+      if (this.searchBy === "Client Name") {
+        endpoint = `clients/search/?firstName=${this.firstName}&lastName=${this.lastName}&searchBy=name`;
+      } else if (this.searchBy === "Client Number") {
+        endpoint = `clients/search/?phoneNumber.primary=${this.phoneNumber}&searchBy=number`;
       }
       axios.get(`${apiURL}/${endpoint}`).then((res) => {
-        this.queryData = res.data
-      })
+        this.queryData = res.data;
+      });
     },
     // abstract get clients call
     getClients() {
-      axios.get(`${apiURL}/clients`).then((res) => {
-        this.queryData = res.data
-      })
-      window.scrollTo(0, 0)
+      // axios.get(`${apiURL}/clients`).then((res) => {
+      //   this.queryData = res.data;
+      // });
+      this.queryData = clients;
+      window.scrollTo(0, 0);
     },
     clearSearch() {
       // Resets all the variables
-      this.searchBy = ''
-      this.firstName = ''
-      this.lastName = ''
-      this.phoneNumber = ''
+      this.searchBy = "";
+      this.firstName = "";
+      this.lastName = "";
+      this.phoneNumber = "";
 
       // get all entries
-      this.getClients()
+      this.getClients();
     },
     editClient(clientID) {
-      this.$router.push({ name: 'updateclient', params: { id: clientID } })
-    }
+      if (this.user.EisLoggedIn) {
+        this.$router.push({ name: "updateclient", params: { id: clientID } });
+      }
+      return;
+    },
   },
   setup() {
     const user = useLoggedInUserStore();
     return { user };
   },
-}
+};
 </script>
 <template>
-  <main>
+  <main v-if="user.EisLoggedIn || user.VisLoggedIn">
     <div>
       <h1
         class="font-bold text-4xl text-red-700 tracking-widest text-center mt-10"
@@ -157,12 +162,12 @@ export default {
           </thead>
           <tbody class="divide-y divide-gray-300">
             <tr
-              @click="editClient(client._id)" v-if="user.EisLoggedIn"
+              @click="editClient(client._id)"
               v-for="client in queryData"
               :key="client._id"
             >
               <td class="p-2 text-left">
-                {{ client.firstName + ' ' + client.lastName }}
+                {{ client.firstName + " " + client.lastName }}
               </td>
               <td class="p-2 text-left">
                 {{ client.phoneNumber.primary }}
@@ -174,4 +179,7 @@ export default {
       </div>
     </div>
   </main>
+  <div v-else>
+    {{ $router.push("/login") }}
+  </div>
 </template>
