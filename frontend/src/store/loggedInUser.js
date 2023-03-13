@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import router from '../router';
 
 //defining a store
 export const useLoggedInUserStore = defineStore({
@@ -8,22 +9,44 @@ export const useLoggedInUserStore = defineStore({
   state: () => {
     return {
       EisLoggedIn: false, //logged in Editor
-      VisLoggedIn:false, //logged in Viewer
+      VisLoggedIn: false, //logged in Viewer
     }
   },
   // equivalent to methods in components, perfect to define business logic
+  // login and logout emthods
   actions: {
+
+    // method to logni user
     async login(username, password) {
       try {
         const response = await apiLogin(username, password);
+
+
+        // set the logged in state for viewer/editro trur or false
         this.$patch({
           EisLoggedIn: response.EisAllowed,
-          VisLoggedIn:response.VisAllowed,
+          VisLoggedIn: response.VisAllowed,
         })
-        this.$router.push("/");
-      } catch(error) {
+        this.$router.push("/")
+
+      } catch (error) {
         console.log(error)
       }
+    },
+    // action to logout current user
+    async logout() {
+      try {
+        this.$patch({
+          EisLoggedIn: false,
+          VisLoggedIn: false,
+        })
+        this.$router.push("/login")
+
+      } catch (error) {
+        console.log(error)
+      }
+
+
     }
 
   }
@@ -31,11 +54,10 @@ export const useLoggedInUserStore = defineStore({
 
 //simulate a login - we will later use our backend to handle authentication
 function apiLogin(u, p) {
-  
-  if (u === "ev" && p === "ev") return Promise.resolve({ EisAllowed: true}); //Use "ev" as username and password to simulate login as a editor
-  if (p === "ev") return Promise.resolve({ EisAllowed: false });
 
-  if (u === "vv" && p === "vv") return Promise.resolve({ VisAllowed: true}); //Use "vv" as username and password to simulate login as a viewer
-  if (p === "vv") return Promise.resolve({ VisAllowed: false });
+  if (u === "editor" && p === "editor") return Promise.resolve({ EisAllowed: true, VisAllowed: true }); //Use "admin" as username and password to simulate login as a editor
 
+  if (u === "viewer" && p === "viewer") return Promise.resolve({ EisAllowed: false, VisAllowed: true }); //Use "viewer" as username and password to simulate login as a viewer
+
+  return Promise.resolve({ EisAllowed: false, VisAllowed: false })
 }

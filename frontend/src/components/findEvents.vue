@@ -1,71 +1,75 @@
 <script>
-import { DateTime } from 'luxon'
-import axios from 'axios'
-const apiURL = import.meta.env.VITE_ROOT_API
+import { DateTime } from "luxon";
+import axios from "axios";
+const apiURL = import.meta.env.VITE_ROOT_API;
 import { useLoggedInUserStore } from "@/store/loggedInUser";
+import { events } from "../mock_data";
 
 export default {
   data() {
     return {
-      events: [],
+      events: events,
       // Parameter for search to occur
-      searchBy: '',
-      name: '',
-      eventDate: ''
-    }
+      searchBy: "",
+      name: "",
+      eventDate: "",
+    };
   },
   mounted() {
-    this.getEvents()
+    this.getEvents();
   },
   methods: {
     // better formattedDate
     formattedDate(datetimeDB) {
       const dt = DateTime.fromISO(datetimeDB, {
-        zone: 'utc'
-      })
+        zone: "utc",
+      });
       return dt
         .setZone(DateTime.now().zoneName, { keepLocalTime: true })
-        .toLocaleString()
+        .toLocaleString();
     },
     handleSubmitForm() {
-      let endpoint = ''
-      if (this.searchBy === 'Event Name') {
-        endpoint = `events/search/?name=${this.name}&searchBy=name`
-      } else if (this.searchBy === 'Event Date') {
-        endpoint = `events/search/?eventDate=${this.eventDate}&searchBy=date`
+      let endpoint = "";
+      if (this.searchBy === "Event Name") {
+        endpoint = `events/search/?name=${this.name}&searchBy=name`;
+      } else if (this.searchBy === "Event Date") {
+        endpoint = `events/search/?eventDate=${this.eventDate}&searchBy=date`;
       }
       axios.get(`${apiURL}/${endpoint}`).then((res) => {
-        this.events = res.data
-      })
+        this.events = res.data;
+      });
     },
     // abstracted method to get events
     getEvents() {
-      axios.get(`${apiURL}/events`).then((res) => {
-        this.events = res.data
-      })
-      window.scrollTo(0, 0)
+      this.events = events;
+      // axios.get(`${apiURL}/events`).then((res) => {
+      //   this.events = res.data;
+      // });
+      // window.scrollTo(0, 0);
     },
     clearSearch() {
       // Resets all the variables
-      this.searchBy = ''
-      this.name = ''
-      this.eventDate = ''
+      this.searchBy = "";
+      this.name = "";
+      this.eventDate = "";
 
-      this.getEvents()
+      this.getEvents();
     },
     editEvent(eventID) {
-      this.$router.push({ name: 'eventdetails', params: { id: eventID } })
-    }
+      if (this.user.EisLoggedIn) {
+        this.$router.push({ name: "eventdetails", params: { id: eventID } });
+      }
+    },
   },
   setup() {
     const user = useLoggedInUserStore();
     return { user };
   },
-}
+};
 </script>
 
 <template>
-  <main>
+  <main v-if="user.EisLoggedIn || user.VisLoggedIn">
     <div>
       <h1
         class="font-bold text-4xl text-red-700 tracking-widest text-center mt-10"
@@ -153,7 +157,7 @@ export default {
           </thead>
           <tbody class="divide-y divide-gray-300">
             <tr
-              @click="editEvent(event._id)" v-if="user.EisLoggedIn"
+              @click="editEvent(event._id)"
               v-for="event in events"
               :key="event._id"
             >
@@ -166,4 +170,7 @@ export default {
       </div>
     </div>
   </main>
+  <div v-else>
+    {{ $router.push("/login") }}
+  </div>
 </template>
