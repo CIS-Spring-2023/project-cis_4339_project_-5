@@ -7,14 +7,14 @@ For form validation [Vuelidate](https://vuelidate-next.netlify.app/) is used.
 
     npm install
 
-### Before startup
-You need to either have a local backend running and or use a cloud deployed backend.
+### Fake Data Used
+NOTE: Currently we are using some fake data (clients, services, and events) for the app.
+The data is stored in file `mock_data.js` in '/src/fake_data.js'
+The data has a list of clients, list of services, and list of events, and also a function that calculates the clients in each zip code and exports an array.
 
-Setup a .env file with following variables, e.g.:
+This data has been used across the app to similate real data coming from an api.
 
-    VITE_ROOT_API=http://localhost:3000
 
-VITE_ROOT_API is the URL for the backend API, either on localhost or in the cloud.
 ### Compiles and hot-reloads for development
 
     npm run dev
