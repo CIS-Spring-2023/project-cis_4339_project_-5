@@ -1,6 +1,7 @@
 <script>
 import axios from 'axios'
 const apiURL = import.meta.env.VITE_ROOT_API
+import { useLoggedInUserStore } from "@/store/loggedInUser";
 
 export default {
   data() {
@@ -48,7 +49,11 @@ export default {
     editClient(clientID) {
       this.$router.push({ name: 'updateclient', params: { id: clientID } })
     }
-  }
+  },
+  setup() {
+    const user = useLoggedInUserStore();
+    return { user };
+  },
 }
 </script>
 <template>
@@ -152,7 +157,7 @@ export default {
           </thead>
           <tbody class="divide-y divide-gray-300">
             <tr
-              @click="editClient(client._id)"
+              @click="editClient(client._id)" v-if="user.EisLoggedIn"
               v-for="client in queryData"
               :key="client._id"
             >
