@@ -14,14 +14,14 @@ export default {
   data() {
     return {
       recentEvents: events,
-      labels: [],
-      chartData: [],
+      labels: events.map((e) => e.name),
+      chartData: events.map((item) => item.attendees.length),
       loading: false,
       error: null,
     };
   },
   mounted() {
-    this.getAttendanceData();
+    // this.getAttendanceData();
   },
   methods: {
     async getAttendanceData() {
@@ -108,6 +108,12 @@ export default {
             </tbody>
           </table>
           <div>
+            <br />
+            <h1
+              class="font-bold text-2xl text-red-700 tracking-widest text-center mt-5 mb-5"
+            >
+              Attendess by Event
+            </h1>
             <AttendanceChart
               v-if="!loading && !error"
               :label="labels"

@@ -93,7 +93,7 @@ export const events = [
         services: ["Adult Education"],
         date: "2023-02-09T00:00:00.000Z",
         description: "hi",
-        attendees: [],
+        attendees: ['a', 'f', 'c'],
         __v: 0,
     },
     {
@@ -110,7 +110,7 @@ export const events = [
         services: ["Youth Services Program"],
         date: "2023-02-10T00:00:00.000Z",
         description: "",
-        attendees: [],
+        attendees: ['a', 'f', 'ca', 'f', 'c'],
         __v: 0,
     },
     {
@@ -127,7 +127,7 @@ export const events = [
         services: ["Early Childhood Education", "Family Support"],
         date: "2023-03-07T00:00:00.000Z",
         description: "",
-        attendees: [],
+        attendees: ['a', 'f'],
         __v: 0,
     },
 
@@ -150,7 +150,7 @@ export const events = [
         ],
         date: "2023-03-08T00:00:00.000Z",
         description: "",
-        attendees: [],
+        attendees: ['a', 'f', 'c', 'a', 'f', 'c', 'a', 'f', 'c'],
         __v: 0,
     },
     {
@@ -167,7 +167,7 @@ export const events = [
         services: [],
         date: "2023-03-09T00:00:00.000Z",
         description: "",
-        attendees: [],
+        attendees: ['a', 'f', 'c', 'a', 'f', 'c'],
         __v: 0,
     },
     {
@@ -184,7 +184,7 @@ export const events = [
         services: [],
         date: "2023-03-09T00:00:00.000Z",
         description: "",
-        attendees: [],
+        attendees: ['a', 'f', 'c', 'a'],
         __v: 0,
     },
     {
@@ -218,7 +218,7 @@ export const events = [
         services: [],
         date: "2023-03-09T00:00:00.000Z",
         description: "",
-        attendees: [],
+        attendees: ['a', 'f'],
         __v: 0,
     },
     {
@@ -235,7 +235,7 @@ export const events = [
         services: ["Family Support"],
         date: "2023-03-10T00:00:00.000Z",
         description: "",
-        attendees: [],
+        attendees: ['a', 'f', 'c'],
         __v: 0,
     },
     {
@@ -252,7 +252,7 @@ export const events = [
         services: [],
         date: "2023-03-10T00:00:00.000Z",
         description: "",
-        attendees: [],
+        attendees: ['a', 'f', 'c', 'a', 'f'],
         __v: 0,
     },
 ];
