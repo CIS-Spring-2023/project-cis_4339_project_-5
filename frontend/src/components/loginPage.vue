@@ -30,15 +30,20 @@
 </template>
 
 <script>
+import { useLoggedInUserStore } from "@/store/loggedInUser";
 
 export default {
-  data(){
-    return{
-        input:{
+  data : () => {
+    return { 
             username: "",
-            password: ""
-        }
-    };
- }
+            password: "",
+        };
+    }, 
+   setup() {
+   const store = useLoggedInUserStore()
+   return {
+      store,
+    }  
+  }
 };
 </script>

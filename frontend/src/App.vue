@@ -2,6 +2,9 @@
 import axios from 'axios';
 const apiURL = import.meta.env.VITE_ROOT_API;
 
+import { useLoggedInUserStore } from "@/store/loggedInUser";
+
+
 export default {
   name: 'App',
   data() {
@@ -13,6 +16,11 @@ export default {
     axios.get(`${apiURL}/org`).then((res) => {
       this.orgName = res.data.name;
     });
+  },
+
+  setup() {
+    const user = useLoggedInUserStore();
+    return { user };
   },
 };
 </script>
@@ -32,38 +40,50 @@ export default {
               </router-link>
             </li>
             <li>
-              <router-link to="/intakeform">
+              <router-link v-if="user.EisLoggedIn" to="/intakeform">
                 <span style="position: relative; top: 6px" class="material-icons">people</span>
                 Client Intake Form
               </router-link>
             </li>
             <li>
-              <router-link to="/eventform">
+              <router-link v-if="user.EisLoggedIn" to="/eventform">
                 <span style="position: relative; top: 6px" class="material-icons">event</span>
                 Create Event
               </router-link>
             </li>
             <li>
-              <router-link to="/findclient">
+              <router-link v-if="user.EisLoggedIn" to="/findclient">
+                <span style="position: relative; top: 6px" class="material-icons">search</span>
+                Find Client
+              </router-link>
+              <router-link v-if="user.VisLoggedIn" to="/findclient">
                 <span style="position: relative; top: 6px" class="material-icons">search</span>
                 Find Client
               </router-link>
             </li>
             <li>
-              <router-link to="/createservice">
+              <router-link v-if="user.EisLoggedIn" to="/createservice">
                 <span style="position: relative; top: 6px" class="material-icons">add</span>
                 Add Service
               </router-link>
             </li>
             <li>
-              <router-link to="/services">
+              <router-link v-if="user.EisLoggedIn" to="/services">
+                <span style="position: relative; top: 6px" class="material-icons">list</span>
+                View Service
+              </router-link>
+              <router-link v-if="user.VisLoggedIn" to="/services">
                 <span style="position: relative; top: 6px" class="material-icons">list</span>
                 View Service
               </router-link>
             </li>
 
             <li>
-              <router-link to="/findevents">
+              <router-link v-if="user.EisLoggedIn" to="/findevents">
+                <span style="position: relative; top: 6px" class="material-icons">search</span>
+                Find Event
+              </router-link>
+              <router-link v-if="user.VisLoggedIn" to="/findevents">
                 <span style="position: relative; top: 6px" class="material-icons">search</span>
                 Find Event
               </router-link>
@@ -91,6 +111,9 @@ export default {
     </div>
   </main>
 </template>
+
+
+
 <style>
 #_container {
   background-color: #c8102e;
