@@ -20,3 +20,15 @@ This data has been used across the app to similate real data coming from an api.
 ### Compiles and hot-reloads for development
 
     npm run dev
+
+### Authorization & Roles
+There are two users. And editor and a viewer. Editor can add, update, delete resources, while viewer can only view resources. The username and passwords for both users is given below.
+ - Editor <br>
+    username: `admin` <br>
+    password: `admin`
+    
+ - Viewer <br>
+    username: `viewer` <br>
+    password: `viewer`
+    
+    
