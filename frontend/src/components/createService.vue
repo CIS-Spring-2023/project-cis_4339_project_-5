@@ -17,7 +17,7 @@ export default {
       newService: {
         id: "",
         title: "",
-        active: false,
+        active: "",
       },
     };
   },
@@ -36,6 +36,7 @@ export default {
 
         // alert user that service has been created
         alert("Added new srevice");
+        this.$router.push("/services");
       }
     },
   },
@@ -43,8 +44,8 @@ export default {
     // vuelidations to validate the new service contains rewquired data for creation
     return {
       newService: {
-        todo: { required },
-        completed: { required },
+        title: { required },
+        active: { required },
       },
     };
   },
@@ -76,12 +77,12 @@ export default {
             type="text"
             class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 hover:cursor-pointer"
             placeholder
-            v-model="newService.todo"
+            v-model="newService.title"
           />
-          <span class="text-black" v-if="v$.newService.todo.$error">
+          <span class="text-black" v-if="v$.newService.title.$error">
             <p
               class="text-red-700"
-              v-for="error of v$.newService.todo.$errors"
+              v-for="error of v$.newService.title.$errors"
               :key="error.$uid"
             >
               {{ error.$message }}!
@@ -89,17 +90,26 @@ export default {
           </span>
         </label>
         <label class="block w-full mt-5">
-          <span class="text-gray-700">Servie Status</span>
+          <span class="text-gray-700">Service Status</span>
           <span style="color: #ff0000">*</span>
           <select
-            v-model="newService.completed"
+            v-model="newService.active"
             class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 hover:cursor-pointer"
-            name="completed"
+            name="active"
             id=""
           >
             <option value="true">Active</option>
             <option value="false">Inactive</option>
           </select>
+          <span class="text-black" v-if="v$.newService.active.$error">
+            <p
+              class="text-red-700"
+              v-for="error of v$.newService.active.$errors"
+              :key="error.$uid"
+            >
+              {{ error.$message }}!
+            </p>
+          </span>
         </label>
         <div class="w-full mt-10 flex space-x-5">
           <button
