@@ -4,6 +4,7 @@ import { required } from "@vuelidate/validators";
 import axios from "axios";
 const apiUrl = import.meta.env.VITE_ROOT_API;
 import { useLoggedInUserStore } from "@/store/loggedInUser";
+import { services } from "../mock_data";
 
 export default {
   // define service props
@@ -16,14 +17,16 @@ export default {
   data() {
     return {
       // create a varible to hold the current service state
-      currentService: {},
+      currentService: { id: "", title: "", active: "" },
     };
   },
   // call endpont to get the service using route param: id
   created() {
     axios.get(`${apiUrl}/todos/${this.$route.params.id}`).then((res) => {
       console.log(res);
-      this.currentService = res.data;
+      this.currentService = services.filter(
+        (s) => (s._id = this.$route.params.id)
+      )[0];
     });
   },
   methods: {
@@ -42,8 +45,8 @@ export default {
     // validations for new service
     return {
       currentService: {
-        todo: { required },
-        completed: { required },
+        title: { required },
+        active: { required },
       },
     };
   },
@@ -75,12 +78,12 @@ export default {
             type="text"
             class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 hover:cursor-pointer"
             placeholder
-            v-model="currentService.todo"
+            v-model="currentService.title"
           />
-          <span class="text-black" v-if="v$.currentService.todo.$error">
+          <span class="text-black" v-if="v$.currentService.title.$error">
             <p
               class="text-red-700"
-              v-for="error of v$.currentService.todo.$errors"
+              v-for="error of v$.currentService.title.$errors"
               :key="error.$uid"
             >
               {{ error.$message }}!
@@ -91,7 +94,7 @@ export default {
           <span class="text-gray-700">Servie Status</span>
           <span style="color: #ff0000">*</span>
           <select
-            v-model="currentService.completed"
+            v-model="currentService.active"
             class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 hover:cursor-pointer"
             name="completed"
             id=""
@@ -99,6 +102,15 @@ export default {
             <option value="true">Active</option>
             <option value="false">Inactive</option>
           </select>
+          <span class="text-black" v-if="v$.currentService.active.$error">
+            <p
+              class="text-red-700"
+              v-for="error of v$.currentService.active.$errors"
+              :key="error.$uid"
+            >
+              {{ error.$message }}!
+            </p>
+          </span>
         </label>
         <div class="w-full mt-10 flex space-x-5">
           <button
