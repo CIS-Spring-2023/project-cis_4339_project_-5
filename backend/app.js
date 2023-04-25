@@ -15,6 +15,11 @@ app.use(
     origin: '*'
   })
 )
+//add strickkt query false to avoid debug messages about strickquery.
+mongoose.set('strictQuery', false);
+
+// enable degub while in dev...Will disable before deployment.
+mongoose.set('debug', true)
 
 // sets up mongoose for the mongoDB connection
 mongoose
@@ -37,6 +42,7 @@ app.use(morgan('dev'))
 app.use('/clients', require('./routes/clients'))
 app.use('/events', require('./routes/events'))
 app.use('/org', require('./routes/org'))
+app.use('/services', require('./routes/services'))
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`)
