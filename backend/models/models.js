@@ -17,6 +17,10 @@ const userSchem = new Schema({
   role: {
     type: String,
     required: true
+  },
+  org: {
+    type: String,
+    required: true
   }
 },
   {

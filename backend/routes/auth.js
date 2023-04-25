@@ -12,7 +12,7 @@ const saltRounds = process.env.SALT_ROUNDS || 10;
 // GET create user
 router.post('/signup', async (req, res, next) => {
     const { username, password, role } = req.body;
-    if (!username || !password || role) {
+    if (!username || !password || !role) {
         res.status(400).send({ error: "providfe user name and passord" })
         return
     }
@@ -20,7 +20,7 @@ router.post('/signup', async (req, res, next) => {
     const salt = await bcrypt.genSalt(parseInt(saltRounds))
     const hasdhedPassword = await bcrypt.hash(password.trim(), salt)
 
-    const newUser = await users.create({ username: username.trim(), password: hasdhedPassword, role })
+    const newUser = await users.create({ username: username.trim(), password: hasdhedPassword, role, org })
 
     await newUser.save();
     res.json(newUser)
@@ -40,7 +40,7 @@ router.post('/login', async (req, res, next) => {
     }
 
     // lookup the user in the database
-    const user = await users.findOne({ username })
+    const user = await users.findOne({ username, org })
 
     // if no user found, return error
     if (!user) {
