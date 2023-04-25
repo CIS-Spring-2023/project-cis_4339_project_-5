@@ -22,9 +22,9 @@ export default {
     handleSubmitForm() {
       let endpoint = "";
       if (this.searchBy === "Client Name") {
-        endpoint = `clients/search/?firstName=${this.firstName}&lastName=${this.lastName}&searchBy=name`;
+        endpoint = `clients/search?firstName=${this.firstName}&lastName=${this.lastName}&searchBy=name`;
       } else if (this.searchBy === "Client Number") {
-        endpoint = `clients/search/?phoneNumber.primary=${this.phoneNumber}&searchBy=number`;
+        endpoint = `clients/search?phoneNumber.primary=${this.phoneNumber}&searchBy=number`;
       }
       axios.get(`${apiURL}/${endpoint}`).then((res) => {
         this.queryData = res.data;
@@ -32,10 +32,10 @@ export default {
     },
     // abstract get clients call
     getClients() {
-      // axios.get(`${apiURL}/clients`).then((res) => {
-      //   this.queryData = res.data;
-      // });
-      this.queryData = clients;
+      axios.get(`${apiURL}/clients`).then((res) => {
+        this.queryData = res.data;
+      });
+
       window.scrollTo(0, 0);
     },
     clearSearch() {
