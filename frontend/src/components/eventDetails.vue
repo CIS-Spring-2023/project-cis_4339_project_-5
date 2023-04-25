@@ -5,7 +5,6 @@ import axios from "axios";
 import { DateTime } from "luxon";
 const apiURL = import.meta.env.VITE_ROOT_API;
 import { useLoggedInUserStore } from "@/store/loggedInUser";
-import { events, services, clients } from "../mock_data";
 
 export default {
   props: ["id"],
@@ -15,11 +14,16 @@ export default {
   },
   data() {
     return {
-      activeServices: [],
-      clientAttendees: clients,
+      allServices: [
+        {
+          _id: "",
+          name: "",
+        },
+      ],
+      clientAttendees: [],
       event: {
         name: "",
-        services: [],
+        services: ["1"],
         date: "",
         address: {
           line1: "",
@@ -34,26 +38,22 @@ export default {
     };
   },
   created() {
-    // axios.get(`${apiURL}/events/id/${this.$route.params.id}`).then((res) => {
-    //   this.event = res.data;
-    //   this.event.date = this.formattedDate(this.event.date);
-    //   this.event.attendees.forEach((e) => {
-    //     axios.get(`${apiURL}/clients/id/${e}`).then((res) => {
-    //       this.clientAttendees.push(res.data);
-    //     });
-    //   });
-    // });
-
-    // GET THE FAKE EVNTS AND SERVICES FROM mock_data.js file
-    this.getFakeData();
+    axios.get(`${apiURL}/events/id/${this.$route.params.id}`).then((res) => {
+      this.event = res.data;
+      this.event.date = this.formattedDate(this.event.date);
+      this.event.attendees.forEach((e) => {
+        axios.get(`${apiURL}/clients/id/${e}`).then((res) => {
+          this.clientAttendees.push(res.data);
+        });
+      });
+    });
+    this.getAllActiveServices();
   },
   methods: {
-    // method to get fake data
-    getFakeData() {
-      this.event = events.filter(
-        (evnt) => evnt._id === this.$route.params.id
-      )[0];
-      this.activeServices = services.filter((s) => s.active);
+    getAllActiveServices() {
+      axios.get(`${apiURL}/services?Active=true`).then((res) => {
+        this.allServices = res.data;
+      });
     },
     // better formatted date, converts UTC to local time
     formattedDate(datetimeDB) {
@@ -65,11 +65,15 @@ export default {
         .toISODate();
     },
     handleEventUpdate() {
-      axios.put(`${apiURL}/events/update/${this.id}`, this.event).then(() => {
-        alert("Update has been saved.");
-        this.$router.back();
-      });
-      alert("event updated");
+      axios
+        .put(`${apiURL}/events/update/${this.id}`, this.event)
+        .then(() => {
+          alert("Update has been saved.");
+          this.$router.back();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     editClient(clientID) {
       this.$router.push({ name: "updateclient", params: { id: clientID } });
@@ -172,7 +176,7 @@ export default {
           <!-- form field -->
           <div class="flex flex-col grid-cols-3">
             <label>Services Offered at Event</label>
-            <div v-for="service in activeServices">
+            <div v-for="service in allServices">
               <label class="inline-flex items-center">
                 <input
                   type="checkbox"
@@ -180,9 +184,9 @@ export default {
                   :value="service._id"
                   v-model="event.services"
                   class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
-                  notchecked
+                  :checked="event.services.includes(service._id)"
                 />
-                <span class="ml-2">{{ service.title }}</span>
+                <span class="ml-2">{{ service.name }}</span>
               </label>
             </div>
           </div>
