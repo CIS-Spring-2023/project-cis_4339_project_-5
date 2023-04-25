@@ -18,44 +18,9 @@ export default {
   data() {
     return {
       // rename events arrays for added clarity
-      eventsAll: "",
-      eventsSelected: "",
-      eventsRegistered: [
-        {
-          address: {
-            line1: "3144 Golden Eagle dr",
-            line2: "",
-            city: "Houston",
-            county: "cinco",
-            zip: "43378",
-          },
-          _id: "f1e08980-a4df-11ed-8dad-e721944ea634",
-          org: "communitygarden",
-          name: "Communit Event at Cinco HTX",
-          services: ["Adult Education"],
-          date: "2023-02-09T00:00:00.000Z",
-          description: "hi",
-          attendees: ["a", "f", "c"],
-          __v: 0,
-        },
-        {
-          address: {
-            line1: "",
-            line2: "",
-            city: "",
-            county: "",
-            zip: "",
-          },
-          _id: "d5e71ba0-a718-11ed-b270-41de63d6fc88",
-          org: "communitygarden",
-          name: "March Townhall",
-          services: ["Youth Services Program"],
-          date: "2023-02-10T00:00:00.000Z",
-          description: "",
-          attendees: ["a", "f", "ca", "f", "c"],
-          __v: 0,
-        },
-      ],
+      eventsAll: [],
+      eventsSelected: [],
+      eventsRegistered: [],
       client: {
         firstName: "",
         middleName: "",
@@ -76,15 +41,15 @@ export default {
     };
   },
   created() {
-    // axios.get(`${apiURL}/clients/id/${this.$route.params.id}`).then((res) => {
-    //   // simplified setting client
-    //   this.client = res.data;
-    // });
-    // axios.get(`${apiURL}/events`).then((res) => {
-    //   // simplified setting eventsAll
-    //   this.eventsAll = res.data;
-    // });
-    // this.getEventsRegistered();
+    axios.get(`${apiURL}/clients/id/${this.$route.params.id}`).then((res) => {
+      // simplified setting client
+      this.client = res.data;
+    });
+    axios.get(`${apiURL}/events`).then((res) => {
+      // simplified setting eventsAll
+      this.eventsAll = res.data;
+    });
+    this.getEventsRegistered();
     this.client = clients.filter((c) => (c._id = this.$route.params.id))[0];
     this.eventsAll = events;
   },
