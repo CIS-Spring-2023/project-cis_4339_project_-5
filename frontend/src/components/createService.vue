@@ -15,8 +15,7 @@ export default {
     return {
       // create a varible to hold the current service state
       newService: {
-        id: "",
-        title: "",
+        name: "",
         active: "",
       },
     };
@@ -26,17 +25,17 @@ export default {
     async createService() {
       const isValid = await this.v$.$validate();
       if (isValid) {
-        // comment out the api call since no api exists
+        // create the service
 
-        // axios.post(`${apiUrl}/todos/add`, this.newService).then((res) => {
-        //   console.log(res);
-
-        //   this.$router.push("/services");
-        // });
-
-        // alert user that service has been created
-        alert("Added new srevice");
-        this.$router.push("/services");
+        axios
+          .post(`${apiUrl}/services`, this.newService)
+          .then((res) => {
+            alert("Added new srevice");
+            this.$router.push("/services");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     },
   },
@@ -44,7 +43,7 @@ export default {
     // vuelidations to validate the new service contains rewquired data for creation
     return {
       newService: {
-        title: { required },
+        name: { required },
         active: { required },
       },
     };
@@ -77,12 +76,12 @@ export default {
             type="text"
             class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 hover:cursor-pointer"
             placeholder
-            v-model="newService.title"
+            v-model="newService.name"
           />
-          <span class="text-black" v-if="v$.newService.title.$error">
+          <span class="text-black" v-if="v$.newService.name.$error">
             <p
               class="text-red-700"
-              v-for="error of v$.newService.title.$errors"
+              v-for="error of v$.newService.name.$errors"
               :key="error.$uid"
             >
               {{ error.$message }}!
@@ -135,3 +134,4 @@ export default {
     {{ $router.push("/login") }}
   </div>
 </template>
+
