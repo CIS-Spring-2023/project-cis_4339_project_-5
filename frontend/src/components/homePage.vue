@@ -14,14 +14,14 @@ export default {
   data() {
     return {
       recentEvents: events,
-      labels: events.map((e) => e.name),
-      chartData: events.map((item) => item.attendees.length),
+      labels: [],
+      chartData: [],
       loading: false,
       error: null,
     };
   },
   mounted() {
-    // this.getAttendanceData();
+    this.getAttendanceData();
   },
   methods: {
     async getAttendanceData() {
