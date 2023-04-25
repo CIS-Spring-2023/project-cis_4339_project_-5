@@ -13,7 +13,8 @@ export default {
   },
   data() {
     return {
-      // removed unnecessary extra array to track services
+      activeServices: [],
+      // / removed unnecessary extra array to track services
       event: {
         name: "",
         services: [],
@@ -27,7 +28,6 @@ export default {
         },
         description: "",
       },
-      activeServices: {},
     };
   },
   created() {
@@ -51,10 +51,9 @@ export default {
       }
     },
     getActiveServices() {
-      // axios.get(`${apiURL}/todos?limit=5`).then((res) => {
-      //   this.activeServices = res.data.todos;
-      // });
-      this.activeServices = services.filter((s) => s.active);
+      axios.get(`${apiURL}/services?Active=true`).then((res) => {
+        this.activeServices = res.data;
+      });
     },
   },
 
@@ -158,9 +157,8 @@ export default {
                   :value="service._id"
                   v-model="event.services"
                   class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-offset-0 focus:ring-indigo-200 focus:ring-opacity-50"
-                  notchecked
                 />
-                <span class="ml-2">{{ service.title }}</span>
+                <span class="ml-2">{{ service.name }}</span>
               </label>
             </div>
           </div>
