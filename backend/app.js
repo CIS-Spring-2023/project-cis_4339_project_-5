@@ -43,6 +43,7 @@ app.use('/clients', require('./routes/clients'))
 app.use('/events', require('./routes/events'))
 app.use('/org', require('./routes/org'))
 app.use('/services', require('./routes/services'))
+app.use('/auth', require('./routes/auth'))
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`)
@@ -51,7 +52,6 @@ app.listen(PORT, () => {
 // error handler
 app.use(function (err, req, res, next) {
   // logs error and error code to console
-  console.error(err.message, req)
   if (!err.statusCode) {
     err.statusCode = 500
   }
