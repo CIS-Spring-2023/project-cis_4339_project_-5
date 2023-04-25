@@ -17,27 +17,35 @@ export default {
   data() {
     return {
       // create a varible to hold the current service state
-      currentService: { id: "", title: "", active: "" },
+      currentService: { name: "", active: false },
     };
   },
   // call endpont to get the service using route param: id
   created() {
-    axios.get(`${apiUrl}/todos/${this.$route.params.id}`).then((res) => {
-      console.log(res);
-      this.currentService = services.filter(
-        (s) => (s._id = this.$route.params.id)
-      )[0];
-    });
+    this.getService();
   },
   methods: {
-    async saveUpdates() {
+    getService() {
+      axios
+        .get(`${apiUrl}/services/id/${this.$route.params.id}`)
+        .then((res) => {
+          this.currentService = res.data;
+        });
+    },
+    async updateService() {
       const isValid = await this.v$.$validate();
       if (isValid) {
-        axios.put(`${apiUrl}/todos/${this.currentService.id}`).then((res) => {
-          console.log(res);
-          alert("Updated srevice");
-          this.$router.push("/services");
-        });
+        axios
+          .put(
+            `${apiUrl}/services/update/${this.currentService._id}`,
+            this.currentService
+          )
+          .then((res) => {
+            alert("Updated srevice");
+            this.$router.push("/services");
+          });
+      } else {
+        alert("err");
       }
     },
   },
@@ -45,7 +53,7 @@ export default {
     // validations for new service
     return {
       currentService: {
-        title: { required },
+        name: { required },
         active: { required },
       },
     };
@@ -78,12 +86,12 @@ export default {
             type="text"
             class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 hover:cursor-pointer"
             placeholder
-            v-model="currentService.title"
+            v-model="currentService.name"
           />
-          <span class="text-black" v-if="v$.currentService.title.$error">
+          <span class="text-black" v-if="v$.currentService?.name?.$error">
             <p
               class="text-red-700"
-              v-for="error of v$.currentService.title.$errors"
+              v-for="error of v$.currentService.name.$errors"
               :key="error.$uid"
             >
               {{ error.$message }}!
@@ -102,7 +110,7 @@ export default {
             <option value="true">Active</option>
             <option value="false">Inactive</option>
           </select>
-          <span class="text-black" v-if="v$.currentService.active.$error">
+          <span class="text-black" v-if="v$.currentService?.active?.$errors">
             <p
               class="text-red-700"
               v-for="error of v$.currentService.active.$errors"
@@ -114,7 +122,7 @@ export default {
         </label>
         <div class="w-full mt-10 flex space-x-5">
           <button
-            @click="saveUpdates()"
+            @click="updateService()"
             class="bg-green-700 text-white rounded hover:bg-green-600"
             type="submit"
           >
