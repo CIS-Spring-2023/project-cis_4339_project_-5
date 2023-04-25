@@ -5,22 +5,30 @@
 </template>
 
 <script>
-import { Chart, registerables } from 'chart.js'
-import pieData from '../assets/pie-data.js'
+import { Chart, registerables } from "chart.js";
+import pieData from "../assets/pie-data.js";
 
 //register the registerables
-Chart.register(...registerables)
+Chart.register(...registerables);
 export default {
-  name: 'ZipChart',
+  props: {
+    label: {
+      type: Array,
+    },
+    chartData: {
+      type: Array,
+    },
+  },
+  name: "ZipChart",
   data() {
     return {
-      pieData: pieData
-    }
+      pieData: pieData,
+    };
   },
 
   mounted() {
-    const ctx = document.getElementById('zip-chart');
+    const ctx = document.getElementById("zip-chart");
     new Chart(ctx, this.pieData);
-  }
-}
+  },
+};
 </script>
