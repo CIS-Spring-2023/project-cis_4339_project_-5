@@ -8,7 +8,7 @@ import { events } from "../mock_data";
 export default {
   data() {
     return {
-      events: events,
+      events: [],
       // Parameter for search to occur
       searchBy: "",
       name: "",
@@ -41,11 +41,10 @@ export default {
     },
     // abstracted method to get events
     getEvents() {
-      this.events = events;
-      // axios.get(`${apiURL}/events`).then((res) => {
-      //   this.events = res.data;
-      // });
-      // window.scrollTo(0, 0);
+      axios.get(`${apiURL}/events`).then((res) => {
+        this.events = res.data;
+      });
+      window.scrollTo(0, 0);
     },
     clearSearch() {
       // Resets all the variables
