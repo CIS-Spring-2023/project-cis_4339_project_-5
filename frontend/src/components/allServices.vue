@@ -7,18 +7,18 @@ export default {
   data() {
     return {
       // create a list of services and asssing fake services data
-      servicesList: services,
+      servicesList: [],
     };
   },
   created() {
     // this fetches the services fro aback end , not acllintg because apis is not available
-    // this.getServices();
+    this.getServices();
   },
   methods: {
     // method to fetch all the services on load. not working because not api is available atm
     getServices() {
       axios.get(`${apiURL}/services`).then((res) => {
-        this.servicesList = res.data.todos;
+        this.servicesList = res.data;
       });
     },
     // this routes to edit srecvice apge for selected service
@@ -74,10 +74,10 @@ export default {
           <tbody class="divide-y divide-gray-250">
             <tr
               v-for="service in servicesList"
-              :key="service.id"
+              :key="service._id"
               class="hover:text-black hover:cursor-pointer"
             >
-              <td class="p-2 w-3/4 text-left">{{ service.title }}</td>
+              <td class="p-2 w-3/4 text-left">{{ service.name }}</td>
               <td class="p-2 w-fit text-left">
                 {{ service.active ? "Active" : "Inactive" }}
               </td>
