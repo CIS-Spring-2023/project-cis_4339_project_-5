@@ -12,9 +12,9 @@ export default {
     };
   },
   created() {
-    // axios.get(`${apiURL}/org`).then((res) => {
-    //   this.orgName = res.data.name;
-    // });
+     axios.get(`${apiURL}/org`).then((res) => {
+       this.orgName = res.data.name;
+     });
   },
 
   setup() {
