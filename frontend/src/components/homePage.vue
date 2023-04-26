@@ -2,20 +2,23 @@
 import { DateTime } from "luxon";
 import axios from "axios";
 import AttendanceChart from "./barChart.vue";
-import ZipChart from "./dashboardPage.vue";
-import { events } from "../mock_data";
+import ZipChart from "./zipChart.vue";
 const apiURL = import.meta.env.VITE_ROOT_API;
 
 export default {
   components: {
     AttendanceChart,
     ZipChart,
+    ZipChart,
   },
   data() {
     return {
-      recentEvents: events,
-      labels: [],
-      chartData: [],
+      recentEvents: [],
+      attendanceChart: {
+        labels: [],
+        data: [],
+      },
+      pieChartData: {},
       loading: false,
       error: null,
     };
@@ -30,10 +33,23 @@ export default {
         this.loading = true;
         const response = await axios.get(`${apiURL}/events/attendance`);
         this.recentEvents = response.data;
-        this.labels = response.data.map(
+
+        // create/filter attendance chart data
+        this.attendanceChart.labels = response.data.map(
           (item) => `${item.name} (${this.formattedDate(item.date)})`
         );
-        this.chartData = response.data.map((item) => item.attendees.length);
+        this.attendanceChart.data = response.data.map(
+          (item) => item.attendees.length
+        );
+
+        // create/filter piechart data
+        response.data.forEach((element) => {
+          this.pieChartData[element.address.zip] = this.pieChartData[
+            element.address.zip
+          ]
+            ? this.pieChartData[element.address.zip] + 1
+            : 1;
+        });
       } catch (err) {
         if (err.response) {
           // client received an error response (5xx, 4xx)
@@ -116,8 +132,8 @@ export default {
             </h1>
             <AttendanceChart
               v-if="!loading && !error"
-              :label="labels"
-              :chart-data="chartData"
+              :label="attendanceChart.labels"
+              :chart-data="attendanceChart.data"
             ></AttendanceChart>
 
             <!-- Start of loading animation -->
@@ -149,7 +165,7 @@ export default {
             >
               Clients by zip code
             </h1>
-            <ZipChart />
+            <ZipChart v-if="!loading && !error" :zipCodeData="pieChartData" />
             <br />
           </div>
           <!--End of pie chart insertion-->

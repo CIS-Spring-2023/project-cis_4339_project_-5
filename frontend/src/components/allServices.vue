@@ -2,7 +2,7 @@
 import axios from "axios";
 const apiURL = import.meta.env.VITE_ROOT_API;
 import { useLoggedInUserStore } from "@/store/loggedInUser";
-import { services } from "../mock_data";
+
 export default {
   data() {
     return {

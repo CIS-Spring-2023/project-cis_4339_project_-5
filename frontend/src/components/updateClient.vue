@@ -6,7 +6,6 @@ import axios from "axios";
 import { DateTime } from "luxon";
 const apiURL = import.meta.env.VITE_ROOT_API;
 import { useLoggedInUserStore } from "@/store/loggedInUser";
-import { clients, events } from "../mock_data";
 
 export default {
   props: ["id"],
@@ -50,8 +49,6 @@ export default {
       this.eventsAll = res.data;
     });
     this.getEventsRegistered();
-    this.client = clients.filter((c) => (c._id = this.$route.params.id))[0];
-    this.eventsAll = events;
   },
   mounted() {
     window.scrollTo(0, 0);
@@ -81,7 +78,6 @@ export default {
       if (!this.user.EisLoggedIn) {
         return;
       }
-      alert("updated");
       // Checks to see if there are any errors in validation
       const isFormCorrect = await this.v$.$validate();
       // If no errors found. isFormCorrect = True then the form is submitted
