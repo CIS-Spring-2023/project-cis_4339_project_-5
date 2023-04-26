@@ -9,8 +9,8 @@ import { useLoggedInUserStore } from "@/store/loggedInUser";
 export default {
   props: ["id"],
   setup() {
-    const user = useLoggedInUserStore();
-    return { user, v$: useVuelidate({ $autoDirty: true }) };
+    const store = useLoggedInUserStore();
+    return { store, v$: useVuelidate({ $autoDirty: true }) };
   },
   data() {
     return {
@@ -97,7 +97,7 @@ export default {
 };
 </script>
 <template>
-  <main v-if="user.EisLoggedIn">
+  <main v-if="store.user.loggedIn && store.user.role == 'editor'">
     <div>
       <h1
         class="font-bold text-4xl text-red-700 tracking-widest text-center mt-10"

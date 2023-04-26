@@ -10,40 +10,59 @@ export const useLoggedInUserStore = defineStore({
   //central part of the store
   state: () => {
     return {
-
-      EisLoggedIn: false, //logged in Editor
-      VisLoggedIn: false, //logged in Viewer
+      user: {
+        loggedIn: false,
+        role: null
+      },
+      error: null
     };
   },
-  // equivalent to methods in components, perfect to define business logic
+
   // login and logout emthods
   actions: {
     // method to logni user
     async login(username, password) {
+      this.error = null;
       try {
 
         const res = await axios.post(`${apiURL}/auth/login`, { username: username, password: password })
-
+        console.log(res.status)
         if (res.data.role == 'editor') {
-          this.EisLoggedIn = true
-          this.VisLoggedIn = true
+          this.user.loggedIn = true;
+          this.user.role = "editor";
         }
         else if (res.data.role == 'viewer') {
-          this.EisAllowed = false
-          this.VisLoggedIn = true
+          this.user.loggedIn = true;
+          this.user.role = "viewer";
         }
 
-      } catch (error) {
-        console.log(error);
+      } catch (err) {
+        if (err.response) {
+          // client received an error response (5xx, 4xx)
+          this.error = {
+            title: "Server Response",
+            message: err.message,
+          };
+        } else if (err.request) {
+          // client never received a response, or request never left
+          this.error = {
+            title: "Unable to Reach Server",
+            message: err.message,
+          };
+        } else {
+          // There's probably an error in your code
+          this.error = {
+            title: "Application Error",
+            message: err.message,
+          };
+        }
       }
     },
     // action to logout current user
     async logout() {
       try {
-        this.$patch({
-          EisLoggedIn: false,
-          VisLoggedIn: false,
-        });
+        this.user.loggedIn = false;
+        this.user.role = null;
         this.$router.push("/login");
       } catch (error) {
         console.log(error);
