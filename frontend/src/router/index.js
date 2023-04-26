@@ -30,11 +30,7 @@ const routes = [
     props: true,
     component: () => import('../components/editService.vue')
   },
-  {
-    path: '/dashboard',
-    name: 'dashboardpage',
-    component: () => import('../components/dashboardPage.vue')
-  },
+
   {
     path: '/intakeform',
     name: 'intakeform',
