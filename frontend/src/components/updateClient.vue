@@ -11,8 +11,8 @@ export default {
   props: ["id"],
   components: { VueMultiselect },
   setup() {
-    const user = useLoggedInUserStore();
-    return { user, v$: useVuelidate({ $autoDirty: true }) };
+    const store = useLoggedInUserStore();
+    return { store, v$: useVuelidate({ $autoDirty: true }) };
   },
   data() {
     return {
@@ -75,7 +75,7 @@ export default {
         });
     },
     async updateClient() {
-      if (!this.user.EisLoggedIn) {
+      if (!this.store.user.loggedIn || this.store.user.role != "editor") {
         return;
       }
       // Checks to see if there are any errors in validation
@@ -154,7 +154,7 @@ export default {
 };
 </script>
 <template>
-  <main v-if="user.EisLoggedIn">
+  <main v-if="store.user.loggedIn && store.user.role == 'editor'">
     <h1
       class="font-bold text-4xl text-red-700 tracking-widest text-center mt-10"
     >

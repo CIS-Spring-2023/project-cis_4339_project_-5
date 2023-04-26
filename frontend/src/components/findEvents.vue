@@ -54,20 +54,20 @@ export default {
       this.getEvents();
     },
     editEvent(eventID) {
-      if (this.user.EisLoggedIn) {
+      if (this.store.user.loggedIn && this.store.user.role == "editor") {
         this.$router.push({ name: "eventdetails", params: { id: eventID } });
       }
     },
   },
   setup() {
-    const user = useLoggedInUserStore();
-    return { user };
+    const store = useLoggedInUserStore();
+    return { store };
   },
 };
 </script>
 
 <template>
-  <main v-if="user.EisLoggedIn || user.VisLoggedIn">
+  <main v-if="store.user.loggedIn">
     <div>
       <h1
         class="font-bold text-4xl text-red-700 tracking-widest text-center mt-10"

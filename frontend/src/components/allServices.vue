@@ -36,15 +36,15 @@ export default {
   },
   setup() {
     // import store from pinia to check if user logged in
-    const user = useLoggedInUserStore();
-    return { user };
+    const store = useLoggedInUserStore();
+    return { store };
   },
 };
 </script>
 
 <template>
   <!-- Check if user is logged in as viewer or editor, if yes render the tamplate else redirect to login page -->
-  <main v-if="user.EisLoggedIn || user.VisLoggedIn">
+  <main v-if="store.user.loggedIn">
     <div>
       <h1
         class="font-bold text-4xl text-red-700 tracking-widest text-center mt-10"
@@ -66,7 +66,10 @@ export default {
             <tr>
               <th class="py-4 px-2 w-3/4 text-left">Service Title</th>
               <th class="py-4 w-fit text-left">Status</th>
-              <th class="py-4 w-fit text-left" v-if="user.EisLoggedIn">
+              <th
+                class="py-4 w-fit text-left"
+                v-if="store.user.loggedIn && store.user.role == 'editor'"
+              >
                 Action
               </th>
             </tr>
@@ -81,7 +84,10 @@ export default {
               <td class="p-2 w-fit text-left">
                 {{ service.active ? "Active" : "Inactive" }}
               </td>
-              <td class="p-2" v-if="user.EisLoggedIn">
+              <td
+                class="p-2"
+                v-if="store.user.loggedIn && store.user.role == 'editor'"
+              >
                 <span
                   @click="editService(service._id)"
                   class="material-icons text-gray-500 hover:cursor-pointer hover:text-black mr-4"

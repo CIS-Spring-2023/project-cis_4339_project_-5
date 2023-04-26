@@ -10,8 +10,8 @@ export default {
   props: ["id"],
   setup() {
     // call the store to get user login status and create validtor object to hold calidatrion error data
-    const user = useLoggedInUserStore();
-    return { user, v$: useVuelidate({ $autoDirty: true }) };
+    const store = useLoggedInUserStore();
+    return { store, v$: useVuelidate({ $autoDirty: true }) };
   },
   data() {
     return {
@@ -62,7 +62,7 @@ export default {
 
 <template>
   <!-- editor need to be logged in create servicve else redirec to login page -->
-  <main class="px-2" v-if="user.EisLoggedIn">
+  <main class="px-2" v-if="store.user.loggedIn && store.user.role == 'editor'">
     <div>
       <h1
         class="font-bold text-4xl text-red-700 tracking-widest text-center mt-10"

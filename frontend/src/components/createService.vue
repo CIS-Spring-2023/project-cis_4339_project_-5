@@ -8,8 +8,8 @@ import { useLoggedInUserStore } from "@/store/loggedInUser";
 export default {
   setup() {
     // callt he userLogginSore to checkif user is logged in
-    const user = useLoggedInUserStore();
-    return { user, v$: useVuelidate({ $autoDirty: true }) };
+    const store = useLoggedInUserStore();
+    return { store, v$: useVuelidate({ $autoDirty: true }) };
   },
   data() {
     return {
@@ -53,7 +53,7 @@ export default {
 
 <template>
   <!-- Editor has to be logged in to create serfvice, if not then redirec to loghin page -->
-  <main class="px-2" v-if="user.EisLoggedIn">
+  <main class="px-2" v-if="store.user.loggedIn && store.user.role == 'editor'">
     <div>
       <h1
         class="font-bold text-4xl text-red-700 tracking-widest text-center mt-10"
@@ -134,4 +134,3 @@ export default {
     {{ $router.push("/login") }}
   </div>
 </template>
-

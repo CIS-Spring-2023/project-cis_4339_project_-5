@@ -1,6 +1,6 @@
 <!-- check the if someonme is logged in if yes not rendeger the lolgin page -->
 <template>
-  <main v-if="!store.EisLoggedIn && !store.VisLoggedIn">
+  <main v-if="!store.user.loggedIn">
     <div class="my-10">
       <h1
         class="font-bold text-4xl text-red-700 tracking-widest text-center mt-10"

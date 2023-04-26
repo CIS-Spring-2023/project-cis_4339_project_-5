@@ -12,14 +12,14 @@ export default {
     };
   },
   created() {
-     axios.get(`${apiURL}/org`).then((res) => {
-       this.orgName = res.data.name;
-     });
+    axios.get(`${apiURL}/org`).then((res) => {
+      this.orgName = res.data.name;
+    });
   },
 
   setup() {
-    const user = useLoggedInUserStore();
-    return { user };
+    const store = useLoggedInUserStore();
+    return { store };
   },
 };
 </script>
@@ -42,7 +42,7 @@ export default {
                 Dashboard
               </router-link>
             </li>
-            <li v-if="user.EisLoggedIn">
+            <li v-if="store.user.role == 'editor'">
               <router-link to="/intakeform">
                 <span
                   style="position: relative; top: 6px"
@@ -52,7 +52,7 @@ export default {
                 Client Intake Form
               </router-link>
             </li>
-            <li v-if="user.EisLoggedIn">
+            <li v-if="store.user.role == 'editor'">
               <router-link to="/eventform">
                 <span
                   style="position: relative; top: 6px"
@@ -62,7 +62,7 @@ export default {
                 Create Event
               </router-link>
             </li>
-            <li v-if="user.EisLoggedIn || user.VisLoggedIn">
+            <li v-if="store.user.loggedIn">
               <router-link to="/findclient">
                 <span
                   style="position: relative; top: 6px"
@@ -72,7 +72,7 @@ export default {
                 Find Client
               </router-link>
             </li>
-            <li v-if="user.EisLoggedIn || user.VisLoggedIn">
+            <li v-if="store.user.loggedIn">
               <router-link to="/findevents">
                 <span
                   style="position: relative; top: 6px"
@@ -83,7 +83,7 @@ export default {
               </router-link>
             </li>
 
-            <li v-if="user.EisLoggedIn">
+            <li v-if="store.user.loggedIn && store.user.role == 'editor'">
               <router-link to="/createservice">
                 <span
                   style="position: relative; top: 6px"
@@ -94,7 +94,7 @@ export default {
               </router-link>
             </li>
 
-            <li v-if="user.VisLoggedIn || user.EisLoggedIn">
+            <li v-if="store.user.loggedIn">
               <router-link to="/services">
                 <span
                   style="position: relative; top: 6px"
@@ -105,7 +105,7 @@ export default {
               </router-link>
             </li>
 
-            <li v-if="!user.VisLoggedIn && !user.EisLoggedIn">
+            <li v-if="!store.user.loggedIn">
               <router-link to="/login">
                 <span
                   style="position: relative; top: 6px"
@@ -117,8 +117,8 @@ export default {
             </li>
             <li
               class="cursor-pointer"
-              v-if="user.VisLoggedIn || user.EisLoggedIn"
-              @click="user.logout()"
+              v-if="store.user.loggedIn"
+              @click="store.logout()"
             >
               <span style="position: relative; top: 6px" class="material-icons"
                 >logout</span
