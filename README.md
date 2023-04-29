@@ -1,4 +1,4 @@
-# Data Platform Project Setup
+# Group-5 Project Setup
 
 This project has been developed over time by students in the CIS 4339 course.
 
