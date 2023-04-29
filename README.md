@@ -21,3 +21,9 @@ cd frontend
 Follow instructions in frontend README for setup and running as a local instance.
 
 
+## Deployemnt on Cloud
+Tje project has been deployed on 'Render.com'.
+
+'''
+https://final-project-c6ff.onrender.com/
+'''
