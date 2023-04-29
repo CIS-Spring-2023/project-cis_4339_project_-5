@@ -97,7 +97,7 @@ export default {
 };
 </script>
 <template>
-  <main v-if="store.user.loggedIn && store.user.role == 'editor'">
+  <main v-if="store.user.loggedIn">
     <div>
       <h1
         class="font-bold text-4xl text-red-700 tracking-widest text-center mt-10"
@@ -264,7 +264,10 @@ export default {
         <div
           class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10"
         >
-          <div class="flex justify-between mt-10 mr-20">
+          <div
+            class="flex justify-between mt-10 mr-20"
+            v-if="store.user.loggedIn && store.user.role == 'editor'"
+          >
             <button
               @click="handleEventUpdate"
               type="submit"
@@ -273,7 +276,10 @@ export default {
               Update Event
             </button>
           </div>
-          <div class="flex justify-between mt-10 mr-20">
+          <div
+            class="flex justify-between mt-10 mr-20"
+            v-if="store.user.loggedIn && store.user.role == 'editor'"
+          >
             <button
               @click="eventDelete"
               type="submit"

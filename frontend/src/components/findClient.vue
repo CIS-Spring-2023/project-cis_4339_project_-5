@@ -48,9 +48,8 @@ export default {
       this.getClients();
     },
     editClient(clientID) {
-      if (this.store.user.loggedIn && this.store.user.role == "editor") {
-        this.$router.push({ name: "updateclient", params: { id: clientID } });
-      }
+      this.$router.push({ name: "updateclient", params: { id: clientID } });
+
       return;
     },
   },

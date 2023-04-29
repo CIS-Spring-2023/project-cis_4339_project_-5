@@ -54,9 +54,7 @@ export default {
       this.getEvents();
     },
     editEvent(eventID) {
-      if (this.store.user.loggedIn && this.store.user.role == "editor") {
-        this.$router.push({ name: "eventdetails", params: { id: eventID } });
-      }
+      this.$router.push({ name: "eventdetails", params: { id: eventID } });
     },
   },
   setup() {
