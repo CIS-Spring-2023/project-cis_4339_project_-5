@@ -154,7 +154,7 @@ export default {
 };
 </script>
 <template>
-  <main v-if="store.user.loggedIn && store.user.role == 'editor'">
+  <main v-if="store.user.loggedIn">
     <h1
       class="font-bold text-4xl text-red-700 tracking-widest text-center mt-10"
     >
@@ -356,7 +356,10 @@ export default {
         <div
           class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-10"
         >
-          <div class="flex justify-between mt-10 mr-20">
+          <div
+            class="flex justify-between mt-10 mr-20"
+            v-if="store.user.loggedIn && store.user.role == 'editor'"
+          >
             <button
               @click="updateClient"
               type="submit"
@@ -365,7 +368,10 @@ export default {
               Update Client
             </button>
           </div>
-          <div class="flex justify-between mt-10 mr-20">
+          <div
+            class="flex justify-between mt-10 mr-20"
+            v-if="store.user.loggedIn && store.user.role == 'editor'"
+          >
             <button
               @click="deregisterClient"
               type="submit"
@@ -417,7 +423,10 @@ export default {
             </table>
           </div>
 
-          <div class="flex flex-col">
+          <div
+            class="flex flex-col"
+            v-if="store.user.loggedIn && store.user.role == 'editor'"
+          >
             <!-- fixed weird selection duplication bug -->
             <VueMultiselect
               class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"

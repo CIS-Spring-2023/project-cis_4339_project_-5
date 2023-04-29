@@ -87,10 +87,7 @@ export default {
     },
     // method to allow click through table to event details
     editEvent(eventID) {
-      if (this.store.user.loggedIn && this.store.user.role == "editor") {
-        this.$router.push({ name: "eventdetails", params: { id: eventID } });
-      }
-      return;
+      this.$router.push({ name: "eventdetails", params: { id: eventID } });
     },
   },
 };
