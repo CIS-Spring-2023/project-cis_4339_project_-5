@@ -24,11 +24,14 @@ This data has been used across the app to similate real data coming from an api.
 ### Authorization & Roles
 There are two users. An editor and a viewer. Editor can view, add, update, and delete resources, while viewer can only view resources. The username and passwords for both users are given below.
  - Editor <br>
-    username: `admin` <br>
-    password: `admin`
+    username: `editor` <br>
+    password: `Test123$`
     
  - Viewer <br>
     username: `viewer` <br>
-    password: `viewer`
+    password: `Test123$`
     
+### Deployement
+Frontend is deployed here <br>
+https://final-project-c6ff.onrender.com/
     
