@@ -41,14 +41,17 @@ export default {
         const response = await axios.all(
           endpoints.map((endpoint) => axios.get(endpoint))
         );
-        let responseEventse = response[0];
+        let responseEvents = response[0];
         let responseclients = response[1];
 
+        // events
+        this.recentEvents = responseEvents.data;
+
         // create/filter attendance chart data
-        this.attendanceChart.labels = responseEventse.data.map(
+        this.attendanceChart.labels = responseEvents.data.map(
           (item) => `${item.name} (${this.formattedDate(item.date)})`
         );
-        this.attendanceChart.data = responseEventse.data.map(
+        this.attendanceChart.data = responseEvents.data.map(
           (item) => item.attendees.length
         );
 
