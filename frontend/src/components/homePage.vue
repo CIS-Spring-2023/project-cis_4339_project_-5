@@ -33,21 +33,27 @@ export default {
   methods: {
     async getAttendanceData() {
       try {
-        this.error = null;
         this.loading = true;
-        const response = await axios.get(`${apiURL}/events/attendance`);
-        this.recentEvents = response.data;
+        this.error = null;
+        let endpoints = [`${apiURL}/events/attendance`, `${apiURL}/clients`];
+
+        // use axios all to fetch concurrent data
+        const response = await axios.all(
+          endpoints.map((endpoint) => axios.get(endpoint))
+        );
+        let responseEventse = response[0];
+        let responseclients = response[1];
 
         // create/filter attendance chart data
-        this.attendanceChart.labels = response.data.map(
+        this.attendanceChart.labels = responseEventse.data.map(
           (item) => `${item.name} (${this.formattedDate(item.date)})`
         );
-        this.attendanceChart.data = response.data.map(
+        this.attendanceChart.data = responseEventse.data.map(
           (item) => item.attendees.length
         );
 
         // create/filter piechart data
-        response.data.forEach((element) => {
+        responseclients.data.forEach((element) => {
           this.pieChartData[element.address.zip] = this.pieChartData[
             element.address.zip
           ]
@@ -76,6 +82,21 @@ export default {
         }
       }
       this.loading = false;
+    },
+    async getClients() {
+      try {
+        const response = await axios.get(`${apiURL}/clients`);
+        console.log(response.data);
+        response.data.forEach((element) => {
+          this.pieChartData[element.address.zip] = this.pieChartData[
+            element.address.zip
+          ]
+            ? this.pieChartData[element.address.zip] + 1
+            : 1;
+        });
+      } catch (error) {
+        console.log(error);
+      }
     },
     formattedDate(datetimeDB) {
       const dt = DateTime.fromISO(datetimeDB, {
