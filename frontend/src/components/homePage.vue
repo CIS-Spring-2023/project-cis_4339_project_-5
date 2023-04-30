@@ -83,21 +83,7 @@ export default {
       }
       this.loading = false;
     },
-    async getClients() {
-      try {
-        const response = await axios.get(`${apiURL}/clients`);
-        console.log(response.data);
-        response.data.forEach((element) => {
-          this.pieChartData[element.address.zip] = this.pieChartData[
-            element.address.zip
-          ]
-            ? this.pieChartData[element.address.zip] + 1
-            : 1;
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    },
+
     formattedDate(datetimeDB) {
       const dt = DateTime.fromISO(datetimeDB, {
         zone: "utc",
