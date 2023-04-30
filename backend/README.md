@@ -20,6 +20,10 @@ Setup a .env file with the following variables: MONGO_URL, PORT and ORG
 ### Compiles and hot-reloads for development
 
     npm start
+    
+### Deployment
+The backend is deployed on render.com <br>
+https://final-project-api-z4zh.onrender.com
 
 ## Postman Documentation
 
